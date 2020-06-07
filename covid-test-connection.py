@@ -2,6 +2,12 @@ from cloudant.client import Cloudant
 from cloudant.error import CloudantException
 from cloudant.result import Result
 
+"""
+    Team: Backend
+    MOJ Call For Code Team 
+"""
+
+
 ## IBM Cloudant credentials. 
 pyusr = "7e89eed1-ada0-47e1-b1d0-2e72dbcf1c45-bluemix"
 pypsswrd = "da7e4ceffecb5a1c35e569bb68652987bb443c0402cc4e6d3f911f1d7335b772"
