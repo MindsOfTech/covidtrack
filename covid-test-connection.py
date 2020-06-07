@@ -4,7 +4,7 @@ from cloudant.result import Result
 
 """
     Team: Backend
-    MOJ Call For Code Team 
+    MindsOfTech 
 """
 
 
