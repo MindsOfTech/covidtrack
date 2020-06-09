@@ -17,6 +17,15 @@ pyapikey = "4fkmluaOyQ2khPzOTwtZnIZDNCsNEtRbfqae_wuZsWVA"
 client = Cloudant.iam(pyusr, pyapikey, connect=True)
 client.connect()
 
+'''
+#Create new database
+databaseName = "databasedemo"
+myDatabaseDemo = client.create_database(databaseName)
+
+if myDatabaseDemo.exists():
+    print("'{0}' successfully created.\n".format(databaseName))
+'''
+
 
 # Test connection to Cloudent db.
 def connectionTest(db):
@@ -30,3 +39,7 @@ def connectionTest(db):
 
 
 connectionTest('coviddev_db')
+
+db = client['coviddev_db']
+
+
