@@ -90,7 +90,7 @@ def opendb(id):
         return("ERROR")
 
 
-# UPDATES/ ADDES NAME by _id
+# UPDATES/ ADDS NAME by _id
 @app.route('/updateuser/<id>/<username>', methods=['GET', 'PUT'])
 def updatename(id, username):
     doc_exist = id in mydb
