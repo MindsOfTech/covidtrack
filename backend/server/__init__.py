@@ -2,7 +2,8 @@ import os
 from flask import Flask, abort, session, request, redirect
 from flask.json import jsonify
 
-app = Flask(__name__, instance_relative_config=True)
+#app = Flask(__name__, instance_relative_config=True)
+app = Flask(__name__, template_folder='../templates')
 
 from server.routes import *
 
@@ -15,4 +16,5 @@ if 'FLASK_LIVE_RELOAD' in os.environ and os.environ['FLASK_LIVE_RELOAD'] == 'tru
 #test route
 @app.route('/hello')
 def hello():
-    return 'Hi, MindsOf Tech is working!'
+    return 'Hi, This hello route is working!'
+

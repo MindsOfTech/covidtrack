@@ -1,12 +1,24 @@
 from cloudant import Cloudant
 from cloudant.result import Result
-from flask import Flask, render_template, request, jsonify, url_for, json
+from flask import Flask, render_template, request, jsonify, url_for, json 
 import atexit
 import os
+import sys
 import json
 
-app = Flask(__name__)
+ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
+os.environ.update({'ROOT_PATH': ROOT_PATH})
+sys.path.append(os.path.join(ROOT_PATH, 'server'))
 
+#import flask app object
+from server import app
+
+if __name__ == '__main__':
+    print('running environment: %s', os.environ.get('FLASK_ENV'))
+
+    app.run(debug=True)
+
+'''
 """
     With the method it won't connect to the group's Cloudant, I belive their is an issue with the password and or URL which requires the password. 
 """
@@ -49,8 +61,5 @@ def allUsername():
 @ atexit.register
 def shutdown():
     client.disconnect()
+'''
 
-
-if __name__ == '__main__':
-
-    app.run(debug=True)
