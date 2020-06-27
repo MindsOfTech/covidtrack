@@ -57,9 +57,9 @@ def allUsername():
         print('No database')
         return jsonify([])
 
-
-@ atexit.register
+'''
+@atexit.register
 def shutdown():
     client.disconnect()
-'''
+
 

@@ -7,15 +7,10 @@ import os,sys
 
 #import Flask object
 from server import app
-
+'''
 ACCOUNT_NAME = "7e89eed1-ada0-47e1-b1d0-2e72dbcf1c45-bluemix"
 API_KEY = "8GlK-4CkdvhsteVdNIGfvEQEifYk5YiyXZpAoVzIEd9w"
 URL = "https://7e89eed1-ada0-47e1-b1d0-2e72dbcf1c45-bluemix.cloudantnosqldb.appdomain.cloud"
-
-ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
-os.environ.update({'ROOT_PATH': ROOT_PATH})
-
-TEMPLATE_PATH = os.path.join(ROOT_PATH, 'templates')
 
 
 # Connection to Cloudant DB
@@ -27,6 +22,7 @@ db_name = 'coviddev_db'
 
 
 mydb = client.create_database(db_name)
+'''
 
 """ # GENERATE short random ID
 id = uuid.uuid4() """
