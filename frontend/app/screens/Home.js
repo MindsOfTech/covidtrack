@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Text, Dimensions, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  Image,
+  ScrollView,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AppBack1 from "../components/AppBack1";
@@ -13,96 +20,143 @@ import MapView, { Marker, Circle } from "react-native-maps";
 function Home(props) {
   return (
     // Try setting `flexDirection` to `column`.
-    <View
-      style={{ flex: 1, flexDirection: "column", backgroundColor: "#E8FDED" }}
-    >
+    <ScrollView>
       <View
-        style={{ width: "100%", height: "3%", backgroundColor: "green" }}
-      ></View>
-
-      <View
-        style={{
-          flex: 1,
-          width: "100%",
-          height: "30%",
-          alignContent: "center",
-          justifyContent: "center",
-          backgroundColor: "green",
-        }}
+        style={{ flex: 1, flexDirection: "column", backgroundColor: "#E8FDED" }}
       >
-        <View style={styles.card5}>
-          <Text style={styles.textsalut}>Good Evening Jessie</Text>
-          <MaterialCommunityIcons name="qrcode-scan" size={30} color="white" />
-          <Image
-            style={styles.image}
-            source={require("../assets/profile.jpg")}
-          />
-        </View>
+        <View
+          style={{ width: "100%", height: "3%", backgroundColor: "green" }}
+        ></View>
 
-        <View style={styles.card}>
-          <Appcases icon="google-earth" total="345" color="#0084F8"></Appcases>
-
-          <Appcases icon="google-earth" total="345" color="#00B027"></Appcases>
-          <Appcases icon="google-earth" total="345" color="#FF0F0F"></Appcases>
-        </View>
-
-        <View style={styles.card2}>
-          <Text>Updated : Today</Text>
-          <Text style={styles.sbutton}>View All Stats</Text>
-        </View>
-      </View>
-
-      <View
-        style={{
-          width: "100%",
-          height: "25%",
-          marginBottom: 30,
-          backgroundColor: "green",
-        }}
-      >
-        <MapView style={styles.mapStyle} />
-      </View>
-
-      <View style={{ width: "100%", height: "36%" }}>
-        <View style={styles.card4}>
-          <Text style={styles.texthead}>Island Curfew</Text>
-          <View
-            style={{
-              flexDirection: "row-reverse",
-              alignSelf: "flex-end",
-              justifyContent: "flex-end",
-              margin: 10,
-              alignItems: "flex-end",
-              alignContent: "center",
-            }}
-          >
-            <Text style={styles.buttonactive}>MoH</Text>
-            <Text style={styles.buttoninactive}>Local</Text>
-            <Text style={styles.buttoninactive}>Verified</Text>
+        <View
+          style={{
+            flex: 1,
+            width: "100%",
+            height: "30%",
+            alignContent: "center",
+            justifyContent: "center",
+            backgroundColor: "green",
+          }}
+        >
+          <View style={styles.card5}>
+            <Text style={styles.textsalut}>Good Evening Jessie</Text>
+            <MaterialCommunityIcons
+              name="qrcode-scan"
+              size={30}
+              color="white"
+            />
+            <Image
+              style={styles.image}
+              source={require("../assets/profile.jpg")}
+            />
           </View>
 
-          <Text style={styles.textmiddle}>May 10, 2020</Text>
-          <Text style={styles.textlast}>
-            The 12-hour curfew which currently runs from 6pm to 6am each day
-            will be adjusted as of Wednesday, May 13 to reflect the new times of
-            8pm to 5am each day until Sunday May 24, the day before the Labour
-            Day holiday which will be observed on Monday, May 25
-          </Text>
-          <Text
-            style={{
-              flexDirection: "row-reverse",
-              alignSelf: "flex-end",
-              justifyContent: "flex-end",
-              margin: 10,
-              alignItems: "flex-end",
-              alignContent: "center",
+          <View style={styles.card}>
+            <Appcases
+              icon="google-earth"
+              total="345"
+              color="#0084F8"
+            ></Appcases>
+
+            <Appcases
+              icon="google-earth"
+              total="345"
+              color="#00B027"
+            ></Appcases>
+            <Appcases
+              icon="google-earth"
+              total="345"
+              color="#FF0F0F"
+            ></Appcases>
+          </View>
+
+          <View style={styles.card2}>
+            <Text>Updated : Today</Text>
+            <Text style={styles.sbutton}>View All Stats</Text>
+          </View>
+        </View>
+
+        <View
+          style={{
+            width: "100%",
+            height: "25%",
+            marginBottom: 30,
+            backgroundColor: "green",
+          }}
+        >
+          <MapView
+            style={styles.mapStyle}
+            initialRegion={{
+              latitude: 17.995147,
+              longitude: -76.7846006,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
             }}
           >
-            read more
-          </Text>
+            <MapView.Circle
+              center={{
+                latitude: 17.995147,
+                longitude: -76.7846006,
+              }}
+              radius={1000}
+              strokeWidth={2}
+              strokeColor="#3399ff"
+              fillColor="rgba(128,191,255, 0.72)"
+            />
+            <MapView.Circle
+              center={{
+                latitude: 18.416665,
+                longitude: -77.1166662,
+              }}
+              radius={1000}
+              strokeWidth={2}
+              strokeColor="#3399ff"
+              fillColor="rgba(128,191,255, 0.72)"
+            />
+          </MapView>
+        </View>
+
+        <View style={{ width: "100%", height: "36%" }}>
+          <View style={styles.card4}>
+            <Text style={styles.texthead}>Island Curfew</Text>
+            <View
+              style={{
+                flexDirection: "row-reverse",
+                alignSelf: "flex-end",
+                justifyContent: "flex-end",
+                margin: 10,
+                alignItems: "flex-end",
+                alignContent: "center",
+              }}
+            >
+              <Text style={styles.buttonactive}>MoH</Text>
+              <Text style={styles.buttoninactive}>Local</Text>
+              <Text style={styles.buttoninactive}>Verified</Text>
+            </View>
+
+            <Text style={styles.textmiddle}>May 10, 2020</Text>
+            <Text style={styles.textlast}>
+              The 12-hour curfew which currently runs from 6pm to 6am each day
+              will be adjusted as of Wednesday, May 13 to reflect the new times
+              of 8pm to 5am each day until Sunday May 24, the day before the
+              Labour Day holiday which will be observed on Monday, May 25
+            </Text>
+            <Text
+              style={{
+                flexDirection: "row-reverse",
+                alignSelf: "flex-end",
+                justifyContent: "flex-end",
+                margin: 10,
+                alignItems: "flex-end",
+                alignContent: "center",
+              }}
+            >
+              read more
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -114,6 +168,7 @@ const styles = StyleSheet.create({
   textsalut: {
     fontWeight: "bold",
     color: "white",
+    fontSize: 22,
   },
   image: {
     width: 50,
@@ -133,9 +188,9 @@ const styles = StyleSheet.create({
 
   mapStyle: {
     width: "95%",
-    height: 170,
+    height: 190,
     marginTop: 15,
-    borderRadius: 55,
+    borderRadius: 10,
     margin: 10,
     marginBottom: 10,
     overflow: "hidden",
@@ -244,8 +299,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "green",
     color: "white",
-    padding: 2,
-    borderRadius: 15,
+    padding: 5,
+    borderRadius: 100,
   },
   buttonactive: {
     backgroundColor: "green",
