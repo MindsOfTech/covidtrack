@@ -29,10 +29,10 @@ id = uuid.uuid4() """
 
 @app.route('/')
 def home():
-    print('heller')
-    print(TEMPLATE_PATH)
-    if mydb.exists():
-        result = request.form
+    #print('heller')
+    #print(TEMPLATE_PATH)
+    #if mydb.exists():
+    #    result = request.form
         return render_template('index.html')
 
 
