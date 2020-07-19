@@ -4,7 +4,6 @@ from ibm_watson import AssistantV2
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 
-# testing my commits
 app = Flask(__name__)
 
 
