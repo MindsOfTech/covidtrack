@@ -3,7 +3,11 @@ from flask import Flask, render_template, jsonify
 from ibm_watson import AssistantV2
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
+
+# testing my commits
 app = Flask(__name__)
+
+
 # Watson Credentials
 url = 'https://api.us-east.assistant.watson.cloud.ibm.com/instances/433cd919-fcaa-4415-9bd7-ab1c316d367c'
 iam_apykey = 'ZRFX-C5GuFKc7ttnRnjEIROl4ObPT6sFh6LbFuxokOOo'
