@@ -1,80 +1,83 @@
 from flask import Flask, render_template, request, jsonify, json, redirect
 from cloudant.error import CloudantException
+from cloudant.client import Cloudant
 
-from server import app, cloud_db  # pull in Flask and database instance
-
+from server import app, cloud_db #pull in Flask and database instance
+#from server import app
 
 @app.route('/user', methods=['GET', 'POST', 'DELETE', 'PATCH'])
+
 def user():
-    if request.method == 'GET':
-        # Postman test http://127.0.0.1:5000/user?id=cricketts
-        query = request.args.get('id')
+	if request.method == 'GET':
+		#Postman test http://127.0.0.1:5000/user?id=cricketts
+		query = request.args.get('id')
 
-        # return jsonify(list(cloud_db))
-        return jsonify(cloud_db[query])
+		#return jsonify(list(cloud_db))
+		return jsonify(cloud_db[query])
 
-    # Postman test http://127.0.0.1:5000/user?id=jrichard&password=testpassword&fname=James&lname=Richard&number=7839871234&parish=St. James
+	#Postman test http://127.0.0.1:5000/user?id=jrichard&password=testpassword&fname=James&lname=Richard&number=7839871234&parish=St. James
+	
+	if request.method == 'POST':
+		
+		usrnm = request.args.get('id')
+		passwrd = request.args.get('password')
+		fname = request.args.get('fname')
+		lname = request.args.get('lname')
+		parish = request.args.get('parish')
+		number = request.args.get('number')
 
-    # CREATE A USER
-    if request.method == 'POST':
+		'''
+		#code to convert query url to dictionary
+		all_args = request.args.to_dict()
+		return jsonify(all_args)
+		'''
+		json_doc = {
+			"_id": usrnm,
+			"password": passwrd,
+			"first_name": fname,
+			"last_name": lname,
+			"number": number,
+			"parish": parish,
+			"type:": "user"
+		}
 
-        usrnm = request.args.get('id')
-        passwrd = request.args.get('password')
-        fname = request.args.get('fname')
-        lname = request.args.get('lname')
-        parish = request.args.get('parish')
-        number = request.args.get('number')
+		new_doc = cloud_db.create_document(json_doc)
+		return jsonify({'ok': True, 'message': 'User created successfully!'}), 200
+		
+		
 
-        '''
-					#code to convert query url to dictionary
-					all_args = request.args.to_dict()
-					return jsonify(all_args)
-				'''
-        json_doc = {
-            "_id": usrnm,
-            "password": passwrd,
-            "first_name": fname,
-            "last_name": lname,
-            "number": number,
-            "parish": parish,
-            "type:": "user"
-        }
+	if request.method == 'DELETE':
+		#query = request.args.get('id', None)
+		query = request.args.get('id', None)
+		if query is not None:
+			try:
+				doc_exist = query in cloud_db
+			except CloudantException:
+				response = {'ok': True, 'message': 'no record found'}
+				return jsonify(response), 200
+			else:
+				mydoc = cloud_db[query]
+				mydoc.delete()
+				response = {'ok': True, 'message': 'record deleted'}
+				return jsonify(response), 200
+		else:
+			return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
 
-        new_doc = cloud_db.create_document(json_doc)
-        return jsonify({'ok': True, 'message': 'User created successfully!'}), 200
+	#update user
+	data = request.get_json()
+	if request.method == 'PATCH':
 
-    # DELETE USER
-    if request.method == 'DELETE':
-        #query = request.args.get('id', None)
-        query = request.args.get('id', None)
-        if query is not None:
-            try:
-                doc_exist = query in cloud_db
-            except CloudantException:
-                response = {'ok': True, 'message': 'no record found'}
-                return jsonify(response), 200
-            else:
-                mydoc = cloud_db[query]
-                mydoc.delete()
-                response = {'ok': True, 'message': 'record deleted'}
-                return jsonify(response), 200
-        else:
-            return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
+		if data.get('id', {}) != {}:
+			mydoc = cloud_db[data.get('id')]
+			del data['id']
 
-    # UPDATE USER
-    data = request.get_json()
-    if request.method == 'PATCH':
+			fields = list(data.keys())
+			for field in fields:
+				mydoc[field] = data.get(field)
 
-        if data.get('id', {}) != {}:
-            mydoc = cloud_db[data.get('id')]
-            del data['id']
+			mydoc.save()
+			return jsonify({'ok': True, 'message': 'record updated'}), 200
 
-            fields = list(data.keys())
-            for field in fields:
-                mydoc[field] = data.get(field)
+		else:
+			return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
 
-            mydoc.save()
-            return jsonify({'ok': True, 'message': 'record updated'}), 200
-
-        else:
-            return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
