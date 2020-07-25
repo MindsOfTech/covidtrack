@@ -1,9 +1,21 @@
 from flask import Flask, render_template, request, jsonify, json, redirect
 from cloudant.error import CloudantException
 from cloudant.client import Cloudant
+from cloudant.query import Query
 
 from server import app, cloud_db #pull in Flask and database instance
 #from server import app
+
+'''
+query = Query(cloud_db, selector={'type': 'symptoms'})
+
+for doc in query.result:
+	if doc['user'] == 'cricketts':
+		print(doc)
+
+for doc in query:
+	print(doc)
+'''
 
 @app.route('/user', methods=['GET', 'POST', 'DELETE', 'PATCH'])
 
@@ -38,7 +50,7 @@ def user():
 			"last_name": lname,
 			"number": number,
 			"parish": parish,
-			"type:": "user"
+			"type": "user"
 		}
 
 		new_doc = cloud_db.create_document(json_doc)
