@@ -7,7 +7,7 @@ from server import app, cloud_db  # pull in Flask and database instance
 
 @app.route('/userSymptoms', methods=['GET', 'POST', 'DELETE', 'PATCH'])
 def user():
-    if request.method == 'GET':
+    if request.method == 'POST':
         usrnm = request.form.get('username')
         cnt = request.form.get('countries')
         symptomsList = request.form.getlist('symptoms')
