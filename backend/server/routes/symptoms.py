@@ -15,17 +15,18 @@ def user():
         isdate = request.form.get('influenzatest')
         confirmedex = request.form.get('confirmedex')
         hshold = request.form.get('confirmedex')
-
-        data = {
-            '_id': usrnm,
-            'Country': cnt,
-            'Symptoms': symptomsList,
-            'Tested For': testList,
-            'Last Influenza Test Date': lastDate,
-            'Have you been exposed to someone confirmed with COVID19': confirmedex,
-            'Does anyone in your household shows Symptoms of covid19': hshold,
-            'type': '-Symptoms-'
-        }
-        doc = mydb.create_document(data)
-        if doc.exists():
+        
+        doc_exist = usr in mydb
+        if doc_exist:
+            mydoc = mydb[usr]
+            mydoc['country'] = cnt
+            mydoc['symptoms'] = symptonsList
+            mydoc['Test For'] = testList
+            mydoc['Last Influenza Test Date'] = isdate
+            mydoc['Have you been exposed to someone confirmed with COVID19'] = confirmedex
+            mydoc['Does anyone in your household shows symptoms of covid19'] = hshold
+            mydoc['type'] = 'symptoms'
+            mydoc.save()
             return jsonify({'ok': True, 'message': 'User DATA UPDATED successfully!'}), 200
+        else:
+            return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
