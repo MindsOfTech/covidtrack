@@ -5,7 +5,7 @@ from cloudant.client import Cloudant
 from server import app, cloud_db  # pull in Flask and database instance
 
 
-@app.route('/userSymptoms', methods=['GET', 'POST', 'DELETE', 'PATCH'])
+@app.route('/symptoms', methods=['GET', 'POST', 'DELETE', 'PATCH'])
 def user():
     if request.method == 'POST':
         usrnm = request.form.get('username')
