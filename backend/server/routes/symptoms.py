@@ -32,5 +32,4 @@ def symptoms():
             return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
 
     if request.method == 'GET':
-        qry = request.args.get('id')
         return jsonify(cloud_db[qry])
