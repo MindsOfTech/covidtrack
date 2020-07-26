@@ -16,11 +16,11 @@ def user():
         confirmedex = request.form.get('confirmedex')
         hshold = request.form.get('confirmedex')
         
-        doc_exist = usr in mydb
+        doc_exist = usr in cloud_db
         if doc_exist:
-            mydoc = mydb[usr]
+            mydoc = cloud_db[usrnm]
             mydoc['country'] = cnt
-            mydoc['symptoms'] = symptonsList
+            mydoc['symptoms'] = symptomsList
             mydoc['Test For'] = testList
             mydoc['Last Influenza Test Date'] = isdate
             mydoc['Have you been exposed to someone confirmed with COVID19'] = confirmedex
