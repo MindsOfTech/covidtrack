@@ -6,21 +6,21 @@ from server import app, cloud_db  # pull in Flask and database instance
 
 
 @app.route('/symptoms', methods=['GET', 'POST', 'DELETE', 'PATCH'])
-def user():
+def symptoms():
     if request.method == 'POST':
-        usrnm = request.form.get('username')
-        cnt = request.form.get('countries')
-        symptomsList = request.form.getlist('symptoms')
-        testList = request.form.getlist('tested')
-        isdate = request.form.get('influenzatest')
-        confirmedex = request.form.get('confirmedex')
-        hshold = request.form.get('confirmedex')
-        
-        doc_exist = usr in cloud_db
+        usrnm = request.args.get('username')
+        cnt = request.args.get('countries')
+        symptomsList = request.args.getlist('symptoms')
+        testList = request.args.getlist('tested')
+        isdate = request.args.get('influenzatest')
+        confirmedex = request.args.get('confirmedex')
+        hshold = request.args.get('confirmedex')
+
+        doc_exist = usrnm in cloud_db
         if doc_exist:
             mydoc = cloud_db[usrnm]
             mydoc['country'] = cnt
-            mydoc['symptoms'] = symptomsList
+            mydoc['symptoms'] = mydoc['symptoms'] + symptomsList
             mydoc['Test For'] = testList
             mydoc['Last Influenza Test Date'] = isdate
             mydoc['Have you been exposed to someone confirmed with COVID19'] = confirmedex
