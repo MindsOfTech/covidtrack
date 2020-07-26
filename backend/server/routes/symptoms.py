@@ -7,8 +7,8 @@ from server import app, cloud_db  # pull in Flask and database instance
 
 @app.route('/symptoms', methods=['GET', 'POST', 'DELETE', 'PATCH'])
 def symptoms():
+    qry = request.args.get('id')
     if request.method == 'POST':
-        usrnm = request.args.get('username')
         cnt = request.args.get('countries')
         symptomsList = request.args.getlist('symptoms')
         testList = request.args.getlist('tested')
@@ -16,9 +16,9 @@ def symptoms():
         confirmedex = request.args.get('confirmedex')
         hshold = request.args.get('confirmedex')
 
-        doc_exist = usrnm in cloud_db
+        doc_exist = qry in cloud_db
         if doc_exist:
-            mydoc = cloud_db[usrnm]
+            mydoc = cloud_db[qry]
             mydoc['country'] = cnt
             mydoc['symptoms'] = mydoc['symptoms'] + symptomsList
             mydoc['Test For'] = testList
@@ -30,3 +30,7 @@ def symptoms():
             return jsonify({'ok': True, 'message': 'User DATA UPDATED successfully!'}), 200
         else:
             return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
+
+    if request.method == 'GET':
+        qry = request.args.get('id')
+        return jsonify(cloud_db[qry])
