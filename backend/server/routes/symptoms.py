@@ -10,19 +10,18 @@ from server import app, cloud_db  # pull in Flask and database instance
 @app.route('/symptoms', methods=['GET', 'POST'])
 def symptom():
     if request.method == 'POST':
-        usrnm = request.form.get('username')
-        cnt = request.form.get('countries')
-        symptomsList = request.form.getlist('symptoms')
-        testList = request.form.getlist('tested')
-        isdate = request.form.get('influenzatest')
-        confirmedex = request.form.get('confirmedex')
-        hshold = request.form.get('confirmedex')
-        
-        doc_exist = usr in mydb
+        cnt = request.args.get('countries')
+        symptomsList = request.args.getlist('symptoms')
+        testList = request.args.getlist('tested')
+        isdate = request.args.get('influenzatest')
+        confirmedex = request.args.get('confirmedex')
+        hshold = request.args.get('confirmedex')
+
+        doc_exist = qry in cloud_db
         if doc_exist:
-            mydoc = mydb[usr]
+            mydoc = cloud_db[qry]
             mydoc['country'] = cnt
-            mydoc['symptoms'] = symptonsList
+            mydoc['symptoms'] = mydoc['symptoms'] + symptomsList
             mydoc['Test For'] = testList
             mydoc['Last Influenza Test Date'] = isdate
             mydoc['Have you been exposed to someone confirmed with COVID19'] = confirmedex
@@ -32,7 +31,6 @@ def symptom():
             return jsonify({'ok': True, 'message': 'User DATA UPDATED successfully!'}), 200
         else:
             return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
-
 
 @app.route('/symptoms/<username>', methods=['GET', 'POST'])
 def page(username):
@@ -62,7 +60,6 @@ def page(username):
                 results.append(doc)
 
             return jsonify({'results':results})
-
 
 
 
