@@ -6,6 +6,7 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  Button,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -15,9 +16,11 @@ import AppText from "../components/AppText";
 import AppTextInput from "../components/AppTextInput";
 import Appcases from "../components/AppCases";
 
+import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import MapView, { Marker, Circle } from "react-native-maps";
+import MapFull from "./MapFull";
 
-function Home(props) {
+function Home({ navigation }) {
   return (
     // Try setting `flexDirection` to `column`.
     <ScrollView>
@@ -40,6 +43,7 @@ function Home(props) {
         >
           <View style={styles.card5}>
             <Text style={styles.textsalut}>Good Evening Jessie</Text>
+
             <MaterialCommunityIcons
               name="qrcode-scan"
               size={30}
@@ -53,18 +57,18 @@ function Home(props) {
 
           <View style={styles.card}>
             <Appcases
-              icon="google-earth"
+              icon="emoticon-neutral"
               total="345"
               color="#0084F8"
             ></Appcases>
 
             <Appcases
-              icon="google-earth"
+              icon="emoticon-happy"
               total="345"
               color="#00B027"
             ></Appcases>
             <Appcases
-              icon="google-earth"
+              icon="emoticon-sad"
               total="345"
               color="#FF0F0F"
             ></Appcases>
@@ -92,6 +96,7 @@ function Home(props) {
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
+            onPress={() => navigation.navigate("Mapfull")}
           >
             <MapView.Circle
               center={{
@@ -160,6 +165,15 @@ function Home(props) {
   );
 }
 
+const HomeStack = createStackNavigator();
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Home" component={Home} />
+      <HomeStack.Screen name="Mapfull" component={MapFull} />
+    </HomeStack.Navigator>
+  );
+}
 const styles = StyleSheet.create({
   container: {
     color: "white",
@@ -351,4 +365,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default HomeStackScreen;

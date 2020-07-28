@@ -1,6 +1,5 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Home from "../screens/Home";
 import MapsList from "../screens/MapsList";
@@ -8,7 +7,8 @@ import Statistics from "../screens/Statistics";
 import Onboarding2 from "../screens/Onboarding2";
 import Onboarding1 from "../screens/Onboarding1";
 import SignIn from "../screens/SignIn";
-import Map from "../screens/MapFull";
+import MapFull from "../screens/MapFull";
+import Checkup from "../screens/Checkup";
 
 const Tab = createBottomTabNavigator();
 
@@ -52,8 +52,8 @@ const AppNavigator = () => (
       })}
     />
     <Tab.Screen
-      name="Map"
-      component={Map}
+      name="Checkup"
+      component={Checkup}
       options={({ navigation }) => ({
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons name="graphql" color={color} size={size} />

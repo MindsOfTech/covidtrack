@@ -8,8 +8,23 @@ import AppText from "../components/AppText";
 import AppTextInput from "../components/AppTextInput";
 import Appcases from "../components/AppCases";
 
-import MapView, { Marker, Circle } from "react-native-maps";
-
+import MapView, {
+  Marker,
+  Circle,
+  Heatmap,
+  PROVIDER_GOOGLE,
+  PROVIDER_DEFAULT,
+  Callout,
+} from "react-native-maps";
+const points = [
+  { latitude: 17.995147, longitude: -76.7846006, weight: 200 },
+  { latitude: 17.996147, longitude: -76.7846006, weight: 200 },
+  { latitude: 17.996147, longitude: -76.7846006, weight: 200 },
+  { latitude: 17.997847, longitude: -76.7846006, weight: 200 },
+  { latitude: 17.996947, longitude: -76.7846006, weight: 200 },
+  { latitude: 17.996147, longitude: -76.7846006, weight: 200 },
+  { latitude: 17.996147, longitude: -76.7846006, weight: 200 },
+];
 function MapFull(props) {
   return (
     // Try setting `flexDirection` to `column`.
@@ -34,17 +49,26 @@ function MapFull(props) {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
+          provider={PROVIDER_GOOGLE}
         >
-          <MapView.Circle
-            center={{
-              latitude: 17.995147,
-              longitude: -76.7846006,
-            }}
-            radius={1000}
-            strokeWidth={2}
-            strokeColor="#3399ff"
-            fillColor="rgba(128,191,255, 0.72)"
+          <MapView.Heatmap
+            points={points}
+            opacity={0.4}
+            radius={50}
+            maxIntensity={100}
+            gradientSmoothing={10}
+            heatmapMode={"POINTS_DENSITY"}
           />
+          {/* <MapView.Circle
+              center={{
+                latitude: 17.995147,
+                longitude: -76.7846006,
+              }}
+              radius={1000}
+              strokeWidth={2}
+              strokeColor="#3399ff"
+              fillColor="rgba(128,191,255, 0.72)"
+            /> */}
           <MapView.Circle
             center={{
               latitude: 18.416665,
