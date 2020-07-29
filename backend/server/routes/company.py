@@ -41,12 +41,13 @@ def looking():
         query = Query(cloud_db, selector={'type': 'company'})
         results = []
         for doc in query.result:
-            makeqr(doc['_id'])
+            # makeqr(doc['_id'])
             results.append(doc['_id'])
         return jsonify({'results': results})
 
 
+""" 
 def makeqr(name):
     qr = pyqrcode.create(name)
     qr.png(name+".png", scale=10)
-    # qr.png(f"{'name.png'}," scale=10)
+    # qr.png(f"{'name.png'}," scale=10) """
