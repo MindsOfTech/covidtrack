@@ -11,6 +11,7 @@ import Appcases from "../components/AppCases";
 import MapView, { Marker, Circle } from "react-native-maps";
 
 function Statistics(props) {
+  console.log(props.route.params);
   return (
     // Try setting `flexDirection` to `column`.
     <View

@@ -7,7 +7,7 @@ function Appcases({ icon, total, color = "blue", ...otherprops }) {
     <View style={(styles.element, { color: color }, { ...otherprops })}>
       <MaterialCommunityIcons
         name={icon}
-        size={50}
+        size={35}
         style={styles.text1}
         color={color}
       />
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontWeight: "bold",
     alignContent: "center",
-    // alignSelf: "auto",
+    alignSelf: "auto",
   },
   text2: {
     alignItems: "center",

@@ -6,23 +6,31 @@ import {
   TextInput,
   StyleSheet,
   Picker,
+  StatusBar,
 } from "react-native";
+
+import { createStackNavigator } from "@react-navigation/stack";
 import { CheckBox, Divider } from "react-native-elements";
+import Statistics from "./Statistics";
+import { render } from "react-dom";
 
 class Checkup extends Component {
-  state = {
-    fever: false,
-    headache: false,
-    nausea: false,
-    soreThroat: false,
-    wetCoughing: false,
-    dryCoughing: false,
-    country: "Jamaica",
-    symptoms: [],
-    testedFor: ["Influenza"],
-    influenzaDate: "2012-08-15",
-    covidExposure: ["Yes"],
-  };
+  constructor() {
+    super();
+    this.state = {
+      fever: false,
+      headache: false,
+      nausea: false,
+      soreThroat: false,
+      wetCoughing: false,
+      dryCoughing: false,
+      country: "Jamaica",
+      symptoms: [],
+      testedFor: ["Influenza"],
+      influenzaDate: "2012-08-15",
+      covidExposure: ["Yes"],
+    };
+  }
 
   handleSymptoms = () => {
     var entries = Object.entries(this.state);
@@ -43,21 +51,24 @@ class Checkup extends Component {
         .covidExposure,
     };
 
-    fetch("http://covy-backend.mybluemix.net/symptoms/jcook", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        report,
-      }),
-    });
-    alert("Thanks for Checking in!");
+    // fetch("http://covy-backend.mybluemix.net/symptoms/jcook", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     report,
+    //   }),
+    // });
+    // navigation.navigate("Statistics", report);
+    alert("Submitted", "Thanks for Checking in!");
+    this.props.navigation.navigate("Home", { a: 3 });
   };
-  render() {
+  render(navigation) {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
         <Text style={{ textAlign: "center", fontSize: 30, padding: 20 }}>
           Lets see how you're doing!
         </Text>
@@ -95,24 +106,37 @@ class Checkup extends Component {
             this.setState({ wetCoughing: !this.state.wetCoughing })
           }
         />
-        {/* <Slider
-          style={{ paddingLeft: 20 }}
-          value={this.state.value}
-          onValueChange={(value) => this.setState({ value })}
-          maximumValue={100}
-          animationType="spring"
-        />
-        <Text>Value: {parseInt(this.state.value)}</Text> */}
+
         <TouchableOpacity
           style={styles.submitButton}
           onPress={() => this.submit()}
         >
           <Text style={styles.submitButtonText}> Submit </Text>
         </TouchableOpacity>
+        {/* <TouchableOpacity
+          style={styles.submitButton}
+          onPress={() => this.props.navigation.navigate("Home", { a: 3 })}
+        >
+          <Text style={styles.submitButtonText}> Next </Text>
+        </TouchableOpacity> */}
       </View>
     );
   }
 }
+
+// function checkUpComp({ navigation }) {
+//   const checkup = new Checkup();
+//   return checkup.render(navigation);
+// }
+// const checkUpStack = createStackNavigator();
+// function checkUp() {
+//   return (
+//     <checkUpStack.Navigator>
+//       <checkUpStack.Screen name="Checkup" component={checkUpComp} />
+//       <checkUpStack.Screen name="Statistics" component={Statistics} />
+//     </checkUpStack.Navigator>
+//   );
+// }
 export default Checkup;
 
 const styles = StyleSheet.create({

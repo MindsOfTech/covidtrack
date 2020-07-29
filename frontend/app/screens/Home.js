@@ -7,6 +7,8 @@ import {
   Image,
   ScrollView,
   Button,
+  TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -19,149 +21,197 @@ import Appcases from "../components/AppCases";
 import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import MapView, { Marker, Circle } from "react-native-maps";
 import MapFull from "./MapFull";
+import Checkup from "./Checkup";
+import Scan from "./scan";
 
 function Home({ navigation }) {
   return (
     // Try setting `flexDirection` to `column`.
-    <ScrollView>
-      <View
-        style={{ flex: 1, flexDirection: "column", backgroundColor: "#E8FDED" }}
-      >
-        <View
-          style={{ width: "100%", height: "3%", backgroundColor: "green" }}
-        ></View>
-
+    <View style={{ flex: 1 }}>
+      <View style={styles.card5}>
+        <StatusBar barStyle="light-content" />
+        <Text style={styles.textsalut}>Good Evening Jessie</Text>
         <View
           style={{
-            flex: 1,
-            width: "100%",
-            height: "30%",
-            alignContent: "center",
-            justifyContent: "center",
-            backgroundColor: "green",
+            width: 100,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <View style={styles.card5}>
-            <Text style={styles.textsalut}>Good Evening Jessie</Text>
-
+          <TouchableOpacity onPress={() => navigation.navigate("Scan")}>
             <MaterialCommunityIcons
               name="qrcode-scan"
               size={30}
               color="white"
             />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Checkup")}>
             <Image
               style={styles.image}
               source={require("../assets/profile.jpg")}
             />
-          </View>
-
-          <View style={styles.card}>
-            <Appcases
-              icon="emoticon-neutral"
-              total="345"
-              color="#0084F8"
-            ></Appcases>
-
-            <Appcases
-              icon="emoticon-happy"
-              total="345"
-              color="#00B027"
-            ></Appcases>
-            <Appcases
-              icon="emoticon-sad"
-              total="345"
-              color="#FF0F0F"
-            ></Appcases>
-          </View>
-
-          <View style={styles.card2}>
-            <Text>Updated : Today</Text>
-            <Text style={styles.sbutton}>View All Stats</Text>
-          </View>
-        </View>
-
-        <View
-          style={{
-            width: "100%",
-            height: "25%",
-            marginBottom: 30,
-            backgroundColor: "green",
-          }}
-        >
-          <MapView
-            style={styles.mapStyle}
-            initialRegion={{
-              latitude: 17.995147,
-              longitude: -76.7846006,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-            onPress={() => navigation.navigate("Mapfull")}
-          >
-            <MapView.Circle
-              center={{
-                latitude: 17.995147,
-                longitude: -76.7846006,
-              }}
-              radius={1000}
-              strokeWidth={2}
-              strokeColor="#3399ff"
-              fillColor="rgba(128,191,255, 0.72)"
-            />
-            <MapView.Circle
-              center={{
-                latitude: 18.416665,
-                longitude: -77.1166662,
-              }}
-              radius={1000}
-              strokeWidth={2}
-              strokeColor="#3399ff"
-              fillColor="rgba(128,191,255, 0.72)"
-            />
-          </MapView>
-        </View>
-
-        <View style={{ width: "100%", height: "36%" }}>
-          <View style={styles.card4}>
-            <Text style={styles.texthead}>Island Curfew</Text>
-            <View
-              style={{
-                flexDirection: "row-reverse",
-                alignSelf: "flex-end",
-                justifyContent: "flex-end",
-                margin: 10,
-                alignItems: "flex-end",
-                alignContent: "center",
-              }}
-            >
-              <Text style={styles.buttonactive}>MoH</Text>
-              <Text style={styles.buttoninactive}>Local</Text>
-              <Text style={styles.buttoninactive}>Verified</Text>
-            </View>
-
-            <Text style={styles.textmiddle}>May 10, 2020</Text>
-            <Text style={styles.textlast}>
-              The 12-hour curfew which currently runs from 6pm to 6am each day
-              will be adjusted as of Wednesday, May 13 to reflect the new times
-              of 8pm to 5am each day until Sunday May 24, the day before the
-              Labour Day holiday which will be observed on Monday, May 25
-            </Text>
-            <Text
-              style={{
-                flexDirection: "row-reverse",
-                alignSelf: "flex-end",
-                justifyContent: "flex-end",
-                margin: 10,
-                alignItems: "flex-end",
-                alignContent: "center",
-              }}
-            >
-              read more
-            </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
-    </ScrollView>
+      <ScrollView>
+        <View style={styles.content}>
+          <View
+            style={{
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
+            }}
+          >
+            <View style={styles.card}>
+              <Appcases
+                icon="emoticon-neutral"
+                total="345"
+                color="#0084F8"
+              ></Appcases>
+
+              <Appcases
+                icon="emoticon-happy"
+                total="345"
+                color="#00B027"
+              ></Appcases>
+              <Appcases
+                icon="emoticon-sad"
+                total="345"
+                color="#FF0F0F"
+              ></Appcases>
+            </View>
+
+            <View style={styles.card2}>
+              <Text>Updated : Today</Text>
+              <View style={styles.sbutton}>
+                <Text>View All Stats</Text>
+              </View>
+            </View>
+          </View>
+
+          <View>
+            <MapView
+              style={styles.mapStyle}
+              initialRegion={{
+                latitude: 17.995147,
+                longitude: -76.7846006,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+              onPress={() => navigation.navigate("Map")}
+            >
+              <MapView.Circle
+                center={{
+                  latitude: 17.995147,
+                  longitude: -76.7846006,
+                }}
+                radius={1000}
+                strokeWidth={2}
+                strokeColor="#3399ff"
+                fillColor="rgba(128,191,255, 0.72)"
+              />
+              <MapView.Circle
+                center={{
+                  latitude: 18.416665,
+                  longitude: -77.1166662,
+                }}
+                radius={1000}
+                strokeWidth={2}
+                strokeColor="#3399ff"
+                fillColor="rgba(128,191,255, 0.72)"
+              />
+              <View style={styles.overlay}>
+                <Text>Jamaica Covid Coverage</Text>
+              </View>
+            </MapView>
+          </View>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <View style={styles.card4}>
+              <Text style={styles.texthead}>Island Curfew</Text>
+              <View
+                style={{
+                  flexDirection: "row-reverse",
+                  alignSelf: "flex-end",
+                  justifyContent: "flex-end",
+                  margin: 10,
+                  alignItems: "flex-end",
+                  alignContent: "center",
+                }}
+              >
+                <Text style={styles.buttonactive}>MoH</Text>
+                <Text style={styles.buttoninactive}>Local</Text>
+                <Text style={styles.buttoninactive}>Verified</Text>
+              </View>
+
+              <Text style={styles.textmiddle}>May 10, 2020</Text>
+              <Text style={styles.textlast}>
+                The 12-hour curfew which currently runs from 6pm to 6am each day
+                will be adjusted as of Wednesday, May 13 to reflect the new
+                times of 8pm to 5am each day until Sunday May 24, the day before
+                the Labour Day holiday which will be observed on Monday, May 25
+              </Text>
+              <Text
+                style={{
+                  flexDirection: "row-reverse",
+                  alignSelf: "flex-end",
+                  justifyContent: "flex-end",
+                  margin: 10,
+                  alignItems: "flex-end",
+                  alignContent: "center",
+                }}
+              >
+                read more
+              </Text>
+            </View>
+            <View style={styles.card4}>
+              <Text style={styles.texthead}>Island Curfew</Text>
+              <View
+                style={{
+                  flexDirection: "row-reverse",
+                  alignSelf: "flex-end",
+                  justifyContent: "flex-end",
+                  margin: 10,
+                  alignItems: "flex-end",
+                  alignContent: "center",
+                }}
+              >
+                <Text style={styles.buttonactive}>MoH</Text>
+                <Text style={styles.buttoninactive}>Local</Text>
+                <Text style={styles.buttoninactive}>Verified</Text>
+              </View>
+
+              <Text style={styles.textmiddle}>May 10, 2020</Text>
+              <Text style={styles.textlast}>
+                The 12-hour curfew which currently runs from 6pm to 6am each day
+                will be adjusted as of Wednesday, May 13 to reflect the new
+                times of 8pm to 5am each day until Sunday May 24, the day before
+                the Labour Day holiday which will be observed on Monday, May 25
+              </Text>
+              <Text
+                style={{
+                  flexDirection: "row-reverse",
+                  alignSelf: "flex-end",
+                  justifyContent: "flex-end",
+                  margin: 10,
+                  alignItems: "flex-end",
+                  alignContent: "center",
+                }}
+              >
+                read more
+              </Text>
+            </View>
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -169,8 +219,14 @@ const HomeStack = createStackNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Home" component={Home} />
-      <HomeStack.Screen name="Mapfull" component={MapFull} />
+      <HomeStack.Screen
+        options={{ headerShown: false }}
+        name="Home"
+        component={Home}
+      />
+      <HomeStack.Screen name="Checkup" component={Checkup} />
+      <HomeStack.Screen name="Map" component={MapFull} />
+      <HomeStack.Screen name="Scan" component={Scan} />
     </HomeStack.Navigator>
   );
 }
@@ -178,7 +234,28 @@ const styles = StyleSheet.create({
   container: {
     color: "white",
   },
+  overlay: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    top: 10,
+    left: 5,
+    textAlign: "center",
+    padding: 10,
+    backgroundColor: "white",
+    width: 180,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
 
+    elevation: 5,
+  },
   textsalut: {
     fontWeight: "bold",
     color: "white",
@@ -209,6 +286,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     overflow: "hidden",
   },
+  content: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+  },
   card: {
     flexDirection: "row",
     borderTopEndRadius: 10,
@@ -219,30 +303,18 @@ const styles = StyleSheet.create({
     padding: 10,
     marginLeft: 10,
     marginRight: 10,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
   },
 
   card5: {
     flexDirection: "row",
-    borderTopEndRadius: 10,
-    borderTopStartRadius: 10,
-
+    backgroundColor: "green",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 10,
-    height: 80,
+    paddingTop: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    height: 100,
   },
 
   card4: {
@@ -266,6 +338,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
+    width: Dimensions.get("window").width - 20,
   },
   card2: {
     flexDirection: "row",
@@ -278,16 +351,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 10,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
   },
 
   card3: {
@@ -313,8 +376,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "green",
     color: "white",
-    padding: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 10,
+    paddingRight: 10,
     borderRadius: 100,
+    textAlignVertical: "center",
   },
   buttonactive: {
     backgroundColor: "green",

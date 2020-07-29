@@ -9,6 +9,8 @@ import Onboarding1 from "../screens/Onboarding1";
 import SignIn from "../screens/SignIn";
 import MapFull from "../screens/MapFull";
 import Checkup from "../screens/Checkup";
+import { createStackNavigator } from "@react-navigation/stack";
+import Scan from "../screens/scan";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,7 +36,7 @@ const AppNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="Cases"
+      name="Countries"
       component={MapsList}
       options={{
         tabBarIcon: ({ color, size }) => (
@@ -42,21 +44,25 @@ const AppNavigator = () => (
         ),
       }}
     />
-    <Tab.Screen
+    {/* <Tab.Screen
       name="Statistics"
       component={Statistics}
       options={({ navigation }) => ({
         tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="graphql" color={color} size={size} />
+          <MaterialCommunityIcons
+            name="trending-up"
+            color={color}
+            size={size}
+          />
         ),
       })}
-    />
+    /> */}
     <Tab.Screen
       name="Checkup"
       component={Checkup}
       options={({ navigation }) => ({
         tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="graphql" color={color} size={size} />
+          <MaterialCommunityIcons name="doctor" color={color} size={size} />
         ),
       })}
     />
