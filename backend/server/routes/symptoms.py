@@ -47,6 +47,7 @@ def page(username):
             data['type'] = 'symptoms'
 
             new_doc = cloud_db.create_document(data)
+            
             return jsonify({'ok': True, 'message': 'Symptoms saved successfully!'}), 200
         else:
             return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
@@ -59,7 +60,7 @@ def page(username):
             for doc in query.result:
                 results.append(doc)
 
-            return jsonify({'results':results})
+            return jsonify({'results':results}), 200
 
 
 
