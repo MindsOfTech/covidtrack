@@ -3,7 +3,7 @@ from cloudant.error import CloudantException
 from cloudant.client import Cloudant
 from cloudant.query import Query
 from datetime import datetime
-
+import pyqrcode
 from server import app, cloud_db
 
 @app.route('/log/<username>', methods=['GET','POST'])
@@ -54,6 +54,7 @@ def log(username):
                 user['Location visited'] = user['Location visited'] + locationList
                 user['Date Time Visited'] = user['Date Time Visited'] + datetimeList
                 user['Company Name'] = user['Company Name'] + nameList
+
                 user.save()
                 return ({'MESSAGE': 'USER was update', 'user': user['_id']})
 
@@ -80,6 +81,7 @@ def log(username):
             log['Location visited'] = []
             log['Date Time Visited'] = []
             log['Company Name'] = nameList
+
             log['_id'] = log['_id']+'_LOG'
             log['Location visited'] = log['Location visited'] + locationList
             log['Date Time Visited'] = log['Date Time Visited'] + datetimeList
