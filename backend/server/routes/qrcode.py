@@ -1,10 +1,13 @@
-from flask import Flask, render_template, request, jsonify, json, redirect
+from flask import Flask, render_template, request, jsonify, json, redirect, send_file
 from cloudant.error import CloudantException
 from cloudant.client import Cloudant
 from cloudant.query import Query
 from datetime import datetime
+from io import BytesIO
+
 # env shfrom PIL import Image
 import pyqrcode
+import os, qrcode
 
 from server import app, cloud_db  # pull in Flask and database instance
 # from server import app
@@ -23,14 +26,23 @@ def cmpqr():
 
 
 # Generating QR CODE for user
-@app.route('/qrUser', methods=['GET'])
-def userqr():
+@app.route('/qrUser/<username>', methods=['GET'])
+def userqr(username):
     if request.method == 'GET':
-        userid = request.args.get('_id')
-        makeqr(userid)
+        #userid = request.args.get('_id')
+        #makeqr(userid)
+
+        value_to_turn_into_qrcode = username
+        pil_img = qrcode.make(value_to_turn_into_qrcode)
+        img_io = BytesIO()
+        pil_img.save(img_io, 'PNG')
+        img_io.seek(0)
+        return send_file(img_io, mimetype='image/png')
+        
+        '''
         response = {'ok': True, 'message': 'CODE GENERATED '}
         return jsonify(response), 200
-
+        '''
         # generate all user qrcode
         """ query = Query(cloud_db, selector={'type': 'symptoms'})
         results = []

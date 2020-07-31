@@ -25,7 +25,8 @@ def log(username):
             select['username'] = username
 
         results = [select]
-        return jsonify(select), 200
+
+        return jsonify(select)
 
     if request.method == 'POST':
         cmpidno = data['cmpid']
@@ -86,8 +87,13 @@ def log(username):
             log['Date Time Visited'] = log['Date Time Visited'] + datetimeList
             newlog = cloud_db.create_document(log)
 
-            return ({'MESSGAE': 'USER WAS CREATED', 'user': log['_id']})
+            return ({'MESSAGE': 'USER WAS CREATED', 'user': log['_id']})
 
+@app.route('/log', methods=['GET'])
+def checkget():
+    username = request.args.get('username')
+    name = username+'_LOG'
+    return jsonify(cloud_db[name])
 
 # Updates a company's doc file on number of visits and date time of visit
 def companyupdates(name):
