@@ -28,9 +28,9 @@ def user():
 		return jsonify(cloud_db[query])
 
 	#Postman test http://127.0.0.1:5000/user?id=jrichard&password=testpassword&fname=James&lname=Richard&number=7839871234&parish=St. James
-	
+	data = request.get_json()
 	if request.method == 'POST':
-		
+		'''
 		usrnm = request.args.get('id')
 		passwrd = request.args.get('password')
 		fname = request.args.get('fname')
@@ -38,11 +38,11 @@ def user():
 		parish = request.args.get('parish')
 		number = request.args.get('number')
 
-		'''
+		
 		#code to convert query url to dictionary
 		all_args = request.args.to_dict()
 		return jsonify(all_args)
-		'''
+		
 		json_doc = {
 			"_id": usrnm,
 			"password": passwrd,
@@ -52,8 +52,13 @@ def user():
 			"parish": parish,
 			"type": "user"
 		}
+		'''
 
-		new_doc = cloud_db.create_document(json_doc)
+		data['_id'] = data['username']
+		data['user'] = username
+		data['type'] = 'user'
+
+		new_doc = cloud_db.create_document(data)
 		return jsonify({'ok': True, 'message': 'User created successfully!'}), 200
 		
 		
@@ -76,7 +81,7 @@ def user():
 			return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
 
 	#update user
-	data = request.get_json()
+	
 	if request.method == 'PATCH':
 
 		if data.get('id', {}) != {}:
