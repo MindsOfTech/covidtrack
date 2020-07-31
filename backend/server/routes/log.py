@@ -19,9 +19,9 @@ def log(username):
 
         select = {}
         for doc in query:
-            select['Company Name'] = doc['Company Name']
-            select['Date Time Visited'] = doc['Date Time Visited']
-            select['Location visited'] = doc['Location visited']
+            select['CompanyName'] = doc['CompanyName']
+            select['DateTimeVisited'] = doc['DateTimeVisited']
+            select['LocationVisited'] = doc['LocationVisited']
             select['username'] = username
 
         results = [select]
@@ -51,12 +51,12 @@ def log(username):
             nameList.append(cmpname)
 
             if user['_id'] in cloud_db:
-                user['Location visited'] = user['Location visited'] + locationList
-                user['Date Time Visited'] = user['Date Time Visited'] + datetimeList
-                user['Company Name'] = user['Company Name'] + nameList
+                user['LocationVisited'] = user['LocationVisited'] + locationList
+                user['DateTimeVisited'] = user['DateTimeVisited'] + datetimeList
+                user['CompanyName'] = user['CompanyName'] + nameList
 
                 user.save()
-                return ({'MESSAGE': 'USER was update', 'user': user['_id']})
+                return ({'MESSAGE': 'Check in was recorded', 'user': user['_id']})
 
         except:
             # If the user with a doc of type 'log' is not found.
@@ -78,16 +78,16 @@ def log(username):
             nameList.append(cmpname)
 
             log['type'] = 'log'
-            log['Location visited'] = []
-            log['Date Time Visited'] = []
-            log['Company Name'] = nameList
+            log['LocationVisited'] = []
+            log['DateTimeVisited'] = []
+            log['CompanyName'] = nameList
 
             log['_id'] = log['_id']+'_LOG'
-            log['Location visited'] = log['Location visited'] + locationList
-            log['Date Time Visited'] = log['Date Time Visited'] + datetimeList
+            log['LocationVisited'] = log['LocationVisited'] + locationList
+            log['DateTimeVisited'] = log['DateTimeVisited'] + datetimeList
             newlog = cloud_db.create_document(log)
 
-            return ({'MESSAGE': 'USER WAS CREATED', 'user': log['_id']})
+            return ({'MESSAGE': 'Log WAS CREATED and Check in created', 'user': log['_id']})
 
 @app.route('/log', methods=['GET'])
 def checkget():
