@@ -16,7 +16,7 @@ const Tab = createBottomTabNavigator();
 
 const tabBarOptions = {
   // showLabel: false,
-  activeTintColor: "#1062FE",
+  activeTintColor: "#04d45b",
   inactiveTintColor: "#000",
   style: {
     backgroundColor: "#F1F0EE",
@@ -40,7 +40,7 @@ const AppNavigator = () => (
       component={MapsList}
       options={{
         tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="plus" color={color} size={size} />
+          <MaterialCommunityIcons name="doctor" color={color} size={size} />
         ),
       }}
     />
@@ -57,15 +57,15 @@ const AppNavigator = () => (
         ),
       })}
     /> */}
-    <Tab.Screen
-      name="Checkup"
-      component={Checkup}
+    {/* <Tab.Screen
+      name="Sign In"
+      component={SignIn}
       options={({ navigation }) => ({
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons name="doctor" color={color} size={size} />
         ),
       })}
-    />
+    /> */}
   </Tab.Navigator>
 );
 

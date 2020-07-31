@@ -11,32 +11,11 @@ import Appcases from "../components/AppCases";
 import MapView, { Marker, Circle } from "react-native-maps";
 
 function Statistics(props) {
-  console.log(props.route.params);
   return (
     // Try setting `flexDirection` to `column`.
     <View
-      style={{ flex: 1, flexDirection: "column", backgroundColor: "#E8FDED" }}
+      style={{ flex: 1, flexDirection: "column", backgroundColor: "white" }}
     >
-      <View
-        style={{
-          flex: 1,
-          width: "100%",
-          height: "30%",
-          alignContent: "center",
-          justifyContent: "center",
-          backgroundColor: "green",
-        }}
-      >
-        <View style={styles.card5}>
-          <Text style={styles.textsalut}>Statistics</Text>
-          <MaterialCommunityIcons name="qrcode-scan" size={30} color="white" />
-          <Image
-            style={styles.image}
-            source={require("../assets/profile.jpg")}
-          />
-        </View>
-      </View>
-
       <View
         style={{
           width: "96%",
@@ -69,19 +48,11 @@ function Statistics(props) {
       >
         <View style={styles.card6}>
           <Text>Updated : Today</Text>
-          <Text style={styles.sbutton}>Jaimaica</Text>
+          <View style={styles.sbutton}>
+            <Text style={{ color: "white" }}>Jamaica</Text>
+          </View>
         </View>
-        <View style={styles.card}>
-          <Appcases icon="google-earth" total="345" color="#0084F8"></Appcases>
-
-          <Appcases icon="google-earth" total="345" color="#00B027"></Appcases>
-          <Appcases icon="google-earth" total="345" color="#FF0F0F"></Appcases>
-        </View>
-
-        <View style={styles.card2}>
-          <Appcases icon="human-male" total="345" color="#9B51E0"></Appcases>
-          <Appcases icon="human-female" total="345" color="#2D9CDB"></Appcases>
-        </View>
+        <Appcases></Appcases>
       </View>
     </View>
   );
@@ -116,7 +87,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 280,
 
-    borderRadius: 55,
+    borderRadius: 10,
 
     overflow: "hidden",
   },
@@ -243,13 +214,17 @@ const styles = StyleSheet.create({
   sbutton: {
     alignContent: "center",
     justifyContent: "center",
-    backgroundColor: "green",
+    backgroundColor: "#59c26F",
     color: "white",
-    padding: 2,
-    borderRadius: 15,
+    paddingLeft: 10,
+    paddingRight: 10,
+    height: 25,
+    paddingRight: 10,
+    borderRadius: 8,
+    textAlignVertical: "center",
   },
   buttonactive: {
-    backgroundColor: "green",
+    backgroundColor: "#59c26F",
     color: "white",
     paddingLeft: 12,
     paddingRight: 12,
