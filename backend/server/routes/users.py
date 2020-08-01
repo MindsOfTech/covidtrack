@@ -55,7 +55,6 @@ def user():
 		'''
 
 		data['_id'] = data['username']
-		data['user'] = username
 		data['type'] = 'user'
 
 		new_doc = cloud_db.create_document(data)

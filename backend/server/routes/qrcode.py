@@ -8,6 +8,7 @@ from io import BytesIO
 # env shfrom PIL import Image
 import pyqrcode
 import os, qrcode
+import json
 
 from server import app, cloud_db  # pull in Flask and database instance
 # from server import app
@@ -17,6 +18,17 @@ from server import app, cloud_db  # pull in Flask and database instance
 @app.route('/qrCompanies', methods=['GET'])
 def cmpqr():
     if request.method == 'GET':
+        cmpid = request.args.get('id')
+
+        value_to_turn_into_qrcode = json.dumps({'cmpid': cmpid, 'intent': 'locationqr'})
+        pil_img = qrcode.make(value_to_turn_into_qrcode)
+        img_io = BytesIO()
+        pil_img.save(img_io, 'PNG')
+        img_io.seek(0)
+        return send_file(img_io, mimetype='image/png')
+
+
+
         query = Query(cloud_db, selector={'type': 'company'})
         results = []
         for doc in query.result:
@@ -32,7 +44,7 @@ def userqr(username):
         #userid = request.args.get('_id')
         #makeqr(userid)
 
-        value_to_turn_into_qrcode = username
+        value_to_turn_into_qrcode = json.dumps({'user': username, 'intent': 'userqr'})
         pil_img = qrcode.make(value_to_turn_into_qrcode)
         img_io = BytesIO()
         pil_img.save(img_io, 'PNG')
