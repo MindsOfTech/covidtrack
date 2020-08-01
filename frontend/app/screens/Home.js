@@ -78,7 +78,7 @@ function HomeScreen({ navigation }) {
       snippet={info.snippet}
       content={info.content}
       tags={info.tags}
-    ></NewsItem>
+    />
   ));
 
   return (

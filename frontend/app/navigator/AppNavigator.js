@@ -2,15 +2,6 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Home from "../screens/Home";
-import MapsList from "../screens/MapsList";
-import Statistics from "../screens/Statistics";
-import Onboarding2 from "../screens/Onboarding2";
-import Onboarding1 from "../screens/Onboarding1";
-import SignIn from "../screens/SignIn";
-import MapFull from "../screens/MapFull";
-import Checkup from "../screens/Checkup";
-import { createStackNavigator } from "@react-navigation/stack";
-import Scan from "../screens/scan";
 
 const Tab = createBottomTabNavigator();
 
@@ -44,28 +35,6 @@ const AppNavigator = () => (
         ),
       }}
     />
-    {/* <Tab.Screen
-      name="Statistics"
-      component={Statistics}
-      options={({ navigation }) => ({
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons
-            name="trending-up"
-            color={color}
-            size={size}
-          />
-        ),
-      })}
-    /> */}
-    {/* <Tab.Screen
-      name="Sign In"
-      component={SignIn}
-      options={({ navigation }) => ({
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="doctor" color={color} size={size} />
-        ),
-      })}
-    /> */}
   </Tab.Navigator>
 );
 
