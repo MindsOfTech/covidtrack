@@ -86,7 +86,7 @@ function HomeScreen({ navigation }) {
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar barStyle="light-content" />
       <View style={styles.card5}>
-        <Text style={styles.textsalut}>Hello Jessie</Text>
+        <Text style={styles.textsalut}>Hello Peter</Text>
         <View
           style={{
             width: 100,
@@ -149,7 +149,7 @@ function HomeScreen({ navigation }) {
               </View>
             </View>
           </View>
-          <Text style={styles.sectiontitle}>Map</Text>
+          <Text style={styles.sectiontitle}>Activity Map</Text>
           <View
             style={{
               shadowColor: "#000",
@@ -219,6 +219,8 @@ function HomeScreen({ navigation }) {
                 <Text
                   style={{
                     color: "black",
+                    alignSelf: "center",
+                    textAlignVertical: "center",
                   }}
                 >
                   Jamaica Covid Coverage
@@ -272,10 +274,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   overlay: {
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-    height: 25,
+    height: 35,
     backgroundColor: "white",
     width: 180,
     borderRadius: 10,
@@ -286,8 +289,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 5,
+    paddingTop: 20,
+    marginTop: 10,
+    marginLeft: 10,
   },
   textsalut: {
     fontWeight: "bold",
@@ -324,7 +329,7 @@ const styles = StyleSheet.create({
     margin: 10,
     marginBottom: 10,
     overflow: "hidden",
-    padding: 10,
+    padding: 0,
   },
   content: {
     backgroundColor: "white",

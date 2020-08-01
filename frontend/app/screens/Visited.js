@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Picker,
   StatusBar,
+  Image,
 } from "react-native";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -18,40 +19,45 @@ class Visited extends Component {
   constructor() {
     super();
     this.state = {
-      date: [
-        "30/07/2020:14:08",
-        "30/07/2020:14:08",
-        "30/07/2020:14:09",
-        "30/07/2020:21:28",
-        "30/07/2020:21:28",
-      ],
-      location: [
-        "KFC",
-        "Wendys",
-        "MegaMart Shopping Centre",
-        "Palace Multiplex",
-        "Dunn's River Falls",
-      ],
+      data: {
+        CompanyName: [],
+        DateTimeVisited: [],
+        LocationVisited: [],
+        username: "",
+      },
+      image: "blob:7941833A-6136-40B1-85CC-77895BECEC44?offset=0&size=440",
     };
   }
   async componentDidMount() {
-    // fetch("http://covy-backend.mybluemix.net/log/phillip", {
-    //   method: "GET",
-    // })
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     this.setState(responseJson);
-    //     console.log(this.state);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
+    fetch("http://covy-backend.mybluemix.net/qrUser/psmith", {
+      method: "GET",
+    })
+      .then((response) => response.blob())
+      .then((responseJson) => {
+        // this.setState(responseJson);
+        // console.log(responseJson);
+        var outside = URL.createObjectURL(responseJson);
+        this.setState({ image: outside });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    fetch("http://covy-backend.mybluemix.net/log/psmith", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({ data: responseJson });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     // try {
     //   //Assign the promise unresolved first then get the data using the json method.
     //   const pokemonApiCall = await fetch(
-    //     "https://covy-backend.mybluemix.net/log/phillip"
+    //     "http://covy-backend.mybluemix.net/qrUser/hellokitty98"
     //   );
-    //   const pokemon = await pokemonApiCall.json();
+    //   const pokemon = await pokemonApiCall.blob();
     //   console.log(pokemon);
     // } catch (err) {
     //   console.log("Error fetching data-----------", err);
@@ -61,11 +67,23 @@ class Visited extends Component {
     var date = args.split(":")[0].split("/");
     var formatted = date[2] + "-" + date[1] + "-" + date[0];
     var d = new Date(formatted);
-    return d.toString().slice(0, 15);
+    return (
+      d.toString().slice(0, 15) +
+      ` @ ${args.split(":")[1]}:${args.split(":")[2]}`
+    );
   }
   render(navigation) {
+    var qri = (
+      <Image
+        source={{
+          uri:
+            this.state.image || "https://via.placeholder.com/300/09f/fff.png",
+        }}
+        style={{ height: 300, width: 300 }}
+      ></Image>
+    );
     var places = [];
-    for (let i = 0; i < this.state.date.length; i++) {
+    for (let i = 0; i < this.state.data.DateTimeVisited.length; i++) {
       places.push(
         <View key={i} style={{ flex: 1, padding: 30 }}>
           <View
@@ -82,10 +100,10 @@ class Visited extends Component {
                 fontSize: 20,
                 fontWeight: "bold",
                 textAlign: "center",
-                padding: 20,
+                paddingLeft: 15,
               }}
             >
-              {this.state.location[i]}
+              {this.state.data.CompanyName[i]}
             </Text>
           </View>
           <View
@@ -94,6 +112,7 @@ class Visited extends Component {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
+              paddingTop: 15,
             }}
           >
             <MaterialCommunityIcons name="calendar" size={25} />
@@ -104,7 +123,7 @@ class Visited extends Component {
                 textAlign: "center",
               }}
             >
-              {this.renderDate(this.state.date[i])}
+              {this.renderDate(this.state.data.DateTimeVisited[i])}
             </Text>
           </View>
         </View>
@@ -121,7 +140,7 @@ class Visited extends Component {
             fontWeight: "bold",
           }}
         >
-          Places you've visited
+          Places {this.state.data.username} visited
         </Text>
         <ScrollView style={{}}>
           <View
@@ -133,6 +152,7 @@ class Visited extends Component {
               justifyContent: "space-between",
             }}
           >
+            {qri}
             {places}
           </View>
         </ScrollView>

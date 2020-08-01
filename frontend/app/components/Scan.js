@@ -18,7 +18,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 function ModalScan(props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
+  const [temp, setTemp] = useState(0);
   const [scanned, setScanned] = useState(false);
+  var test = {
+    cmpid: "",
+    user: "",
+    intent: "",
+  };
 
   useEffect(() => {
     (async () => {
@@ -27,24 +33,100 @@ function ModalScan(props) {
     })();
   }, []);
 
+  const logLocation = () => {
+    fetch("http://covy-backend.mybluemix.net/log/psmith", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cmpid: test.cmpid,
+      }),
+    });
+    // setModalVisible(!modalVisible);
+  };
+  const logUser = async () => {
+    // alert(test.user);
+
+    try {
+      //Assign the promise unresolved first then get the data using the json method.
+      const responseApi = await fetch(
+        `http://covy-backend.mybluemix.net/symptoms/${test.user}`
+      );
+      const responseJson = await responseApi.json();
+      setTemp(
+        responseJson.results[responseJson.results.length - 1].report.lastTemp
+      );
+    } catch (err) {
+      console.log("Error fetching data-----------", err);
+    }
+    // fetch(`http://covy-backend.mybluemix.net/symptoms/${test.user}`, {
+    //   method: "GET",
+    // })
+    //   .then((response) => response.json())
+    //   .then((responseJson) => {
+    //     setTemp(
+    //       responseJson.results[responseJson.results.length - 1].report.lastTemp
+    //     );
+    //     // this.setState(responseJson);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+  };
+  const close = () => {
+    setModalVisible(!modalVisible);
+    // setScanned(false);
+  };
   const handleBarCodeScanned = ({ type, data }) => {
-    console.log("before " + scanned);
-    setScanned(true);
-    var obj = JSON.parse(data);
-    console.log(scanned);
-    Alert.alert(
-      "User Identified",
-      obj._id,
-      [
+    test = JSON.parse(data);
+
+    if (test.intent == "locationqr") {
+      setScanned(true);
+      logLocation();
+
+      Alert.alert(
+        "Thanks for checking in!",
+        "Enjoy your day",
+        [
+          { text: "OK", onPress: () => close() },
+          { text: "Scan again", onPress: () => setScanned(false) },
+        ],
         {
-          text: "Scan Again",
-          onPress: () => setScanned(false),
-          style: "cancel",
-        },
-        { text: "OK" },
-      ],
-      { cancelable: false }
-    );
+          cancelable: false,
+        }
+      );
+    }
+    if (test.intent == "userqr") {
+      setScanned(true);
+      logUser();
+      if (temp > 98) {
+        Alert.alert(
+          "Unsafe!",
+          `Your last temperature is ${temp}°`,
+          [
+            { text: "OK", onPress: () => close() },
+            { text: "Scan again", onPress: () => setScanned(false) },
+          ],
+          {
+            cancelable: false,
+          }
+        );
+      } else {
+        Alert.alert(
+          "Safe!",
+          `Your last temperature is normal, at ${temp}°`,
+          [
+            { text: "OK", onPress: () => setModalVisible(!modalVisible) },
+            { text: "Scan again", onPress: () => setScanned(false) },
+          ],
+          {
+            cancelable: false,
+          }
+        );
+      }
+    }
   };
 
   if (hasPermission === null) {
@@ -113,7 +195,7 @@ function ModalScan(props) {
                     }}
                   >
                     <MaterialCommunityIcons
-                      name="keyboard-backspace"
+                      name="close"
                       size={25}
                       color="black"
                       sty
@@ -174,7 +256,7 @@ function ModalScan(props) {
                       zIndex: 1000,
                     }}
                   >
-                    Tap to Scan
+                    Scan again
                   </Text>
                 </TouchableOpacity>
               </View>

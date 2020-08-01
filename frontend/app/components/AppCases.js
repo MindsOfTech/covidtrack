@@ -14,7 +14,7 @@ class AppCases extends Component {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log("data - ---------", responseJson);
+        // console.log("data - ---------", responseJson);
         this.setState(responseJson);
       })
       .catch((error) => {

@@ -28,7 +28,7 @@ class Checkup extends Component {
       testedFor: ["Influenza"],
       influenzaDate: "2012-08-15",
       covidExposure: ["Yes"],
-      value: 0,
+      value: 89,
     };
   }
   resetState = () => {
@@ -68,7 +68,7 @@ class Checkup extends Component {
       lastTemp: parseInt(this.state.value),
     };
 
-    fetch("http://covy-backend.mybluemix.net/symptoms/jcook", {
+    fetch("http://covy-backend.mybluemix.net/symptoms/psmith", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -236,5 +236,6 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: "white",
     textAlign: "center",
+    fontSize: 20,
   },
 });
