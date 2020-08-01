@@ -11,8 +11,9 @@ import { ScrollView } from "react-native-gesture-handler";
 
 function NewsItem(props) {
   const [modalVisible, setModalVisible] = useState(false);
-  var taglist = props.tags.map((info) => (
+  var taglist = props.tags.map((info, index) => (
     <View
+      key={index}
       style={info.verified == true ? [styles.tag, styles[info.name]] : null}
     >
       <Text style={styles.buttonactive}>{info.name}</Text>
