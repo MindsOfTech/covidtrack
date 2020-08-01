@@ -1,6 +1,4 @@
-# Our Covid Surveillance Solution
+## Covy App
 
-Cloudant Connection tutorial: https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-creating-and-populating-a-simple-ibm-cloudant-database-on-ibm-cloud
+Built as a submission for IBM Call for Code 2020
 
-[Keep API keys Private]
-Cloudant API Key: 4fkmluaOyQ2khPzOTwtZnIZDNCsNEtRbfqae_wuZsWVA
