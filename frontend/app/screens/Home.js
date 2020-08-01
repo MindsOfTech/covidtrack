@@ -215,18 +215,18 @@ function HomeScreen({ navigation }) {
                 title={"High risk"}
                 description={"290 reported cases in this area"}
               />
-              <View style={styles.overlay}>
-                <Text
-                  style={{
-                    color: "black",
-                    alignSelf: "center",
-                    textAlignVertical: "center",
-                  }}
-                >
-                  Jamaica Covid Coverage
-                </Text>
-              </View>
             </MapView>
+            <View style={styles.overlay}>
+              <Text
+                style={{
+                  color: "black",
+                  alignSelf: "center",
+                  textAlignVertical: "center",
+                }}
+              >
+                Jamaica Covid Coverage
+              </Text>
+            </View>
           </View>
 
           <AllNews content={newsItems}></AllNews>
@@ -274,6 +274,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   overlay: {
+    position: "absolute",
+    top: 15,
+    left: 10,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
