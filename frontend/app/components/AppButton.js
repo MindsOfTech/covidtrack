@@ -2,12 +2,10 @@ import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 
-
-
-function AppButton({ title, onPress, color = "green" }) {
+function AppButton({ title, onPress, color = "#59c26F" }) {
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: color , }]}
+      style={[styles.button, { backgroundColor: color }]}
       onPress={onPress}
     >
       <Text style={styles.text}>{title}</Text>
@@ -17,14 +15,14 @@ function AppButton({ title, onPress, color = "green" }) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "green",
+    backgroundColor: "#59c26F",
     borderRadius: 40,
     flexDirection: "row",
     width: "70%",
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    padding: 10,
+    padding: 15,
     marginVertical: 10,
     shadowColor: "#000",
     shadowOffset: {

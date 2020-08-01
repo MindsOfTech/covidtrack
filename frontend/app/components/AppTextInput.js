@@ -31,11 +31,9 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 10,
     shadowColor: "#000",
-
-    
   },
   icon: {
-    marginRight: 1,
+    marginRight: 10,
   },
 });
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -6,6 +6,12 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  Button,
+  TouchableHighlight,
+  Alert,
+  TouchableOpacity,
+  StatusBar,
+  Modal,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -14,157 +20,280 @@ import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import AppTextInput from "../components/AppTextInput";
 import Appcases from "../components/AppCases";
-
+import NewsItem from "../components/NewsItem";
+import AllNews from "../components/AllNews";
+import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import MapView, { Marker, Circle } from "react-native-maps";
+import MapFull from "./MapFull";
+import Checkup from "./Checkup";
+import Statistics from "./Statistics";
+import Visited from "./Visited";
+import ModalScan from "../components/Scan";
 
-function Home(props) {
+function HomeScreen({ navigation }) {
+  const [newsModalVisible, setNewsModalVisible] = useState(false);
+  var news = [
+    {
+      key: 3,
+      title: "Shared Housing",
+      date: "July 10, 2020",
+      snippet: `Shared or congregate housing includes apartments, condominiums, student or faculty housing, national and state park staff housing, transitional housing, and domestic violence and abuse shelters`,
+      content: `Shared or congregate housing includes apartments, condominiums, student or faculty housing, national and state park staff housing, transitional housing, and domestic violence and abuse shelters. Shared or congregate housing includes apartments, condominiums, student or faculty housing, national and state park staff housing, transitional housing, and domestic violence and abuse shelters. Shared or congregate housing includes apartments, condominiums, student or faculty housing, national and state park staff housing, transitional housing, and domestic violence and abuse shelters.`,
+      tags: [
+        { name: "Verified", verified: true },
+        { name: "Intl", verified: true },
+        { name: "CDC", verified: true },
+      ],
+    },
+    {
+      key: 2,
+      title: "New Cases",
+      date: "June 18, 2020",
+      snippet: `Jamaica has recorded one new case of COVID-19 in the last 24 hours. This brings to 856 the total number of confirmed positives for the island. The new case, which has been classified as imported, is of an adult female from Clarendon. There are now 321 imported cases; 246 cases`,
+      content: `Jamaica has recorded one new case of COVID-19 in the last 24 hours. This brings to 856 the total number of confirmed positives for the island. The new case, which has been classified as imported, is of an adult female from Clarendon. There are now 321 imported cases; 246 cases that are contacts of confirmed cases; 44 local transmission cases not epidemiologically linked; 236 cases that are related to the workplace cluster in St. Catherine; and nine (9) cases under investigation. Some 485 or 57% of the confirmed cases are females and 371 or 43% are males, with ages ranging from two (2) months to 87 years. Of the 856 cases confirmed with COVID-19 to date 724 or 84.8% have recovered, 46 or 5.4% were repatriated, and 10 or 1.2% have died. There are 76 (8.8%) active cases currently under observation, including two moderately ill persons. There are no critically ill cases at this time.`,
+      tags: [
+        { name: "Verified", verified: true },
+        { name: "Local", verified: true },
+        { name: "MOH", verified: true },
+      ],
+    },
+    {
+      key: 1,
+      title: "Island Curfew",
+      date: "May 01, 2020",
+      snippet: `The 12-hour curfew which currently runs from 6pm to 6am each day will be adjusted as of Wednesday, May 13 to reflect the new times of 8pm to 5am each day until Sunday May 24, the day before the Labour Day holiday which will be observed on Monday, May 25`,
+      content: `The 12-hour curfew which currently runs from 6pm to 6am each day will be adjusted as of Wednesday, May 13 to reflect the new times of 8pm to 5am each day until Sunday May 24, the day before the Labour Day holiday which will be observed on Monday, May 25. For the Labour Day holiday period which begins on the Sunday, the curfew will be tightened and will run from 3pm Sunday, May 24 until 8am on Labour Day. On Labour Day, the curfew will commence at 3pm and will run until 5am on Tuesday, May 26. Prime Minister Andrew Holness made the announcement Monday evening as he addressed a virtual COVID-19 press conference from Jamaica House. He noted that the tightening of the curfew over the Labour Day period will be similar to what obtained over the Easter holiday period to limit the spread of the novel coronavirus.`,
+      tags: [
+        { name: "Verified", verified: true },
+        { name: "Local", verified: true },
+        { name: "MOH", verified: true },
+      ],
+    },
+  ];
+  var newsItems = news.map((info, index) => (
+    <NewsItem
+      key={index}
+      title={info.title}
+      date={info.date}
+      snippet={info.snippet}
+      content={info.content}
+      tags={info.tags}
+    ></NewsItem>
+  ));
+
   return (
     // Try setting `flexDirection` to `column`.
-    <ScrollView>
-      <View
-        style={{ flex: 1, flexDirection: "column", backgroundColor: "#E8FDED" }}
-      >
-        <View
-          style={{ width: "100%", height: "3%", backgroundColor: "green" }}
-        ></View>
-
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <StatusBar barStyle="light-content" />
+      <View style={styles.card5}>
+        <Text style={styles.textsalut}>Hello Peter</Text>
         <View
           style={{
-            flex: 1,
-            width: "100%",
-            height: "30%",
-            alignContent: "center",
-            justifyContent: "center",
-            backgroundColor: "green",
+            width: 100,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <View style={styles.card5}>
-            <Text style={styles.textsalut}>Good Evening Jessie</Text>
-            <MaterialCommunityIcons
-              name="qrcode-scan"
-              size={30}
-              color="white"
-            />
+          <ModalScan></ModalScan>
+          <TouchableOpacity onPress={() => navigation.navigate("Visited")}>
             <Image
               style={styles.image}
               source={require("../assets/profile.jpg")}
             />
-          </View>
-
-          <View style={styles.card}>
-            <Appcases
-              icon="google-earth"
-              total="345"
-              color="#0084F8"
-            ></Appcases>
-
-            <Appcases
-              icon="google-earth"
-              total="345"
-              color="#00B027"
-            ></Appcases>
-            <Appcases
-              icon="google-earth"
-              total="345"
-              color="#FF0F0F"
-            ></Appcases>
-          </View>
-
-          <View style={styles.card2}>
-            <Text>Updated : Today</Text>
-            <Text style={styles.sbutton}>View All Stats</Text>
-          </View>
-        </View>
-
-        <View
-          style={{
-            width: "100%",
-            height: "25%",
-            marginBottom: 30,
-            backgroundColor: "green",
-          }}
-        >
-          <MapView
-            style={styles.mapStyle}
-            initialRegion={{
-              latitude: 17.995147,
-              longitude: -76.7846006,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          >
-            <MapView.Circle
-              center={{
-                latitude: 17.995147,
-                longitude: -76.7846006,
-              }}
-              radius={1000}
-              strokeWidth={2}
-              strokeColor="#3399ff"
-              fillColor="rgba(128,191,255, 0.72)"
-            />
-            <MapView.Circle
-              center={{
-                latitude: 18.416665,
-                longitude: -77.1166662,
-              }}
-              radius={1000}
-              strokeWidth={2}
-              strokeColor="#3399ff"
-              fillColor="rgba(128,191,255, 0.72)"
-            />
-          </MapView>
-        </View>
-
-        <View style={{ width: "100%", height: "36%" }}>
-          <View style={styles.card4}>
-            <Text style={styles.texthead}>Island Curfew</Text>
-            <View
-              style={{
-                flexDirection: "row-reverse",
-                alignSelf: "flex-end",
-                justifyContent: "flex-end",
-                margin: 10,
-                alignItems: "flex-end",
-                alignContent: "center",
-              }}
-            >
-              <Text style={styles.buttonactive}>MoH</Text>
-              <Text style={styles.buttoninactive}>Local</Text>
-              <Text style={styles.buttoninactive}>Verified</Text>
-            </View>
-
-            <Text style={styles.textmiddle}>May 10, 2020</Text>
-            <Text style={styles.textlast}>
-              The 12-hour curfew which currently runs from 6pm to 6am each day
-              will be adjusted as of Wednesday, May 13 to reflect the new times
-              of 8pm to 5am each day until Sunday May 24, the day before the
-              Labour Day holiday which will be observed on Monday, May 25
-            </Text>
-            <Text
-              style={{
-                flexDirection: "row-reverse",
-                alignSelf: "flex-end",
-                justifyContent: "flex-end",
-                margin: 10,
-                alignItems: "flex-end",
-                alignContent: "center",
-              }}
-            >
-              read more
-            </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
-    </ScrollView>
+      <ScrollView>
+        <View style={styles.content}>
+          <View style={{}}>
+            <Text style={styles.sectiontitle}>Covid Overview</Text>
+            <View
+              style={[
+                styles.card,
+                {
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+
+                  elevation: 5,
+                },
+              ]}
+            >
+              <Appcases></Appcases>
+              <View style={styles.card2}>
+                <Text>Updated : Today</Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Statistics")}
+                >
+                  <View style={styles.sbutton}>
+                    <Text
+                      style={{
+                        color: "white",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        textAlignVertical: "center",
+                        textAlign: "center",
+                      }}
+                    >
+                      View All Stats
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <Text style={styles.sectiontitle}>Activity Map</Text>
+          <View
+            style={{
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
+            }}
+          >
+            <MapView
+              style={styles.mapStyle}
+              initialRegion={{
+                latitude: 17.995147,
+                longitude: -76.7846006,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+              onPress={() => navigation.navigate("Map")}
+            >
+              <MapView.Circle
+                center={{
+                  latitude: 17.995147,
+                  longitude: -76.7846006,
+                }}
+                radius={1000}
+                strokeWidth={2}
+                strokeColor="#3399ff"
+                fillColor="rgba(128,191,255, 0.72)"
+              />
+              <Marker
+                coordinate={{
+                  latitude: 17.995147,
+                  longitude: -76.7846006,
+                }}
+                // image={require("../assets/marker.png")}
+                // opacity={0.1}
+                title={"High risk"}
+                pinColor={"#59c26F"}
+                description={"275 reported cases in this area"}
+              />
+              <MapView.Circle
+                center={{
+                  latitude: 18.416665,
+                  longitude: -77.1166662,
+                }}
+                radius={1000}
+                strokeWidth={2}
+                strokeColor="#3399ff"
+                fillColor="rgba(128,191,255, 0.72)"
+              />
+              <Marker
+                coordinate={{
+                  latitude: 18.416665,
+                  longitude: -77.1166662,
+                }}
+                // image={require("../assets/marker.png")}
+                // opacity={0.1}
+                pinColor={"#59c26F"}
+                title={"High risk"}
+                description={"290 reported cases in this area"}
+              />
+              <View style={styles.overlay}>
+                <Text
+                  style={{
+                    color: "black",
+                    alignSelf: "center",
+                    textAlignVertical: "center",
+                  }}
+                >
+                  Jamaica Covid Coverage
+                </Text>
+              </View>
+            </MapView>
+          </View>
+
+          <AllNews content={newsItems}></AllNews>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            {newsItems}
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
+const HomeStack = createStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator
+      screenOptions={{
+        headerTintColor: "#00B027",
+        headerTitleStyle: { color: "black" },
+      }}
+    >
+      <HomeStack.Screen
+        options={{ headerShown: false }}
+        name="Home"
+        component={HomeScreen}
+      />
+      <HomeStack.Screen name="Checkup" component={Checkup} />
+      <HomeStack.Screen name="Map" component={MapFull} />
+      <HomeStack.Screen name="Statistics" component={Statistics} />
+      <HomeStack.Screen name="Visited" component={Visited} />
+    </HomeStack.Navigator>
+  );
+}
 const styles = StyleSheet.create({
   container: {
     color: "white",
   },
-
+  sectiontitle: {
+    marginTop: 20,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  overlay: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    height: 35,
+    backgroundColor: "white",
+    width: 180,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    paddingTop: 20,
+    marginTop: 10,
+    marginLeft: 10,
+  },
   textsalut: {
     fontWeight: "bold",
     color: "white",
@@ -182,53 +311,56 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   textmiddle: {
-    fontWeight: "100",
+    fontWeight: "400",
+    margin: 5,
+    fontStyle: "italic",
+  },
+  textlast: {
+    fontWeight: "400",
+    lineHeight: 25,
     margin: 5,
   },
 
   mapStyle: {
     width: "95%",
-    height: 190,
+    height: 230,
     marginTop: 15,
     borderRadius: 10,
     margin: 10,
     marginBottom: 10,
     overflow: "hidden",
+    padding: 0,
+  },
+  content: {
+    backgroundColor: "white",
+    paddingTop: 20,
+    paddingBottom: 20,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-evenly",
   },
   card: {
-    flexDirection: "row",
-    borderTopEndRadius: 10,
-    borderTopStartRadius: 10,
+    marginTop: 15,
+    flexDirection: "column",
+    borderRadius: 10,
     backgroundColor: "white",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 10,
     marginLeft: 10,
     marginRight: 10,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
   },
 
   card5: {
     flexDirection: "row",
-    borderTopEndRadius: 10,
-    borderTopStartRadius: 10,
-
+    backgroundColor: "#59c26F",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 10,
-    height: 80,
+    paddingTop: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    height: 100,
   },
 
   card4: {
@@ -242,27 +374,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
     height: 250,
     marginTop: 10,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-  card2: {
-    flexDirection: "row",
-    borderBottomEndRadius: 10,
-    borderBottomStartRadius: 10,
-    backgroundColor: "white",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-    marginLeft: 10,
-    marginRight: 10,
     marginBottom: 10,
 
     shadowColor: "#000",
@@ -274,6 +385,17 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
+    width: Dimensions.get("window").width - 20,
+  },
+  card2: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+
+    marginTop: 25,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
 
   card3: {
@@ -287,7 +409,11 @@ const styles = StyleSheet.create({
     height: 500,
     width: 500,
   },
-
+  tag: {
+    marginLeft: 5,
+    backgroundColor: "#59c26F",
+    borderRadius: 5,
+  },
   button: {
     alignContent: "flex-end",
     justifyContent: "flex-end",
@@ -297,13 +423,16 @@ const styles = StyleSheet.create({
   sbutton: {
     alignContent: "center",
     justifyContent: "center",
-    backgroundColor: "green",
+    backgroundColor: "#59c26F",
     color: "white",
-    padding: 5,
-    borderRadius: 100,
+    paddingLeft: 10,
+    paddingRight: 10,
+    height: 25,
+    paddingRight: 10,
+    borderRadius: 8,
+    textAlignVertical: "center",
   },
   buttonactive: {
-    backgroundColor: "green",
     color: "white",
     paddingLeft: 12,
     paddingRight: 12,
@@ -316,7 +445,6 @@ const styles = StyleSheet.create({
   },
 
   buttoninactive: {
-    backgroundColor: "#c4c4c4",
     color: "white",
     paddingLeft: 12,
     paddingRight: 12,
@@ -326,6 +454,12 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     margin: 2,
+  },
+  intl: {
+    backgroundColor: "#cc0000",
+  },
+  cdc: {
+    backgroundColor: "#005eaa",
   },
   title: {
     fontWeight: "bold",
@@ -349,6 +483,48 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: "80%",
   },
+  centeredView: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: 0,
+  },
+  modalView: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    height: "80%",
+    backgroundColor: "white",
+    borderTopEndRadius: 20,
+    borderTopStartRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    alignSelf: "flex-end",
+    borderRadius: 5,
+    padding: 5,
+    elevation: 2,
+  },
+  textStyle: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    lineHeight: 25,
+    textAlign: "left",
+  },
 });
 
-export default Home;
+export { HomeScreen, HomeStackScreen };
