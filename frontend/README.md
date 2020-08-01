@@ -1,7 +1,13 @@
-## Quick Start - for those of us with places to be
+## Quick Start - for those of us who are born ready!
 
+You'll need the expo cli - npm install --global expo-cli.
+Then:
 - npm install
+- yarn install (just in case)
 - expo start
+
+These commands should get you up and running, also checkout - [Available Scripts](#available-scripts) to get the expo mobile app.
+
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).
 
