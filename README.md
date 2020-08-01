@@ -50,9 +50,11 @@ Installation instructions can be found in the respective folders for [Backend](h
 ## Authors
 
 * **Shakeane Hinds** - [Shak](https://github.com/shakeanehinds)
-* **Camir Rickets** - [Camir](https://github.com/ricketts)
+* **Camir Ricketts** - [Camir](https://github.com/ricketts)
 * **Damian Graham** - [Damian](https://github.com/midnightgammr)
 * **Javian Anderson** - [Javian](https://github.com/manuel1710)
+* **Nahir Ricketts** 
+
 
 
 See also the list of [contributors](https://github.com/MindsOfTech/covidtrack/graphs/contributors) who participated in this project.
