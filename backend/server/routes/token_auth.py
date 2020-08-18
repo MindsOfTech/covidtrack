@@ -8,7 +8,7 @@ from server import app, cloud_db  # pull in Flask and database instance
 import jwt
 from functools import wraps
 
-app.config['SECRET_KEY'] = 'sss'
+app.config['SECRET_KEY'] = ''
 
 exp_time = datetime.datetime.utcnow()+datetime.timedelta(seconds=30)
 curr_time = datetime.datetime.utcnow()
