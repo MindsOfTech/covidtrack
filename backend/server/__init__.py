@@ -10,10 +10,10 @@ import jwt
 app = Flask(__name__, template_folder="../public",
             static_folder="../public", static_url_path='')
 
-ACCOUNT_NAME = "7e89eed1-ada0-47e1-b1d0-2e72dbcf1c45-bluemix"
-API_KEY = "8GlK-4CkdvhsteVdNIGfvEQEifYk5YiyXZpAoVzIEd9w"
+ACCOUNT_NAME = ""
+API_KEY = ""
 URL = ""
-app.config['SECRET_KEY'] = 'covy$%(!)@*#)!GROUP$(@DJF_!+@SECretJVMSOEITHFkEy'
+app.config['SECRET_KEY'] = ''
 
 client = Cloudant.iam(ACCOUNT_NAME, API_KEY, connect=True)
 dbname = 'coviddev_db'
