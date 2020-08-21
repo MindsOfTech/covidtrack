@@ -10,9 +10,8 @@ import jwt
 from functools import wraps
 
 
-exp_time = datetime.datetime.utcnow()+datetime.timedelta(seconds=3600)
+'''exp_time = datetime.datetime.utcnow()+datetime.timedelta(seconds=3600)'''
 curr_time = datetime.datetime.utcnow()
-
 
 @ app.route('/public')
 def public():
@@ -31,7 +30,7 @@ def login():
         try:
             username = request.args.get('username')
             password = request.args.get('password')
-            # let me know is this is too tight.
+
             selector = {'user': username,
                         'password': password}
             qry = cloud_db.get_query_result(selector)
@@ -39,7 +38,7 @@ def login():
                 data = doc['_id']
             userdata = cloud_db[data]
             session['logged_in'] = True
-            #token = jwt.encode({'user': username, 'exp': exp_time},app.config['SECRET_KEY'])
+
             token = jwt.encode({'user': username}, app.config['SECRET_KEY'])
 
             return jsonify({'token': token.decode('utf-8')})
