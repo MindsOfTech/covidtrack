@@ -2,11 +2,12 @@ from flask import Flask, render_template, request, jsonify, json, redirect, send
 from cloudant.client import Cloudant
 from cloudant.error import CloudantException
 from cloudant.result import Result
-import os,sys
+import os
+import sys
 
 
-#import Flask object
-from server import app
+# import Flask object
+from server import app, cloud_db, check_for_token
 '''
 ACCOUNT_NAME = "7e89eed1-ada0-47e1-b1d0-2e72dbcf1c45-bluemix"
 API_KEY = "8GlK-4CkdvhsteVdNIGfvEQEifYk5YiyXZpAoVzIEd9w"
@@ -27,17 +28,20 @@ mydb = client.create_database(db_name)
 """ # GENERATE short random ID
 id = uuid.uuid4() """
 
+
 @app.route('/')
+@check_for_token
 def home():
-    #print('heller')
-    #print(TEMPLATE_PATH)
-    #if mydb.exists():
+    # print('heller')
+    # print(TEMPLATE_PATH)
+    # if mydb.exists():
     #    result = request.form
-        return render_template('index.html')
+    return render_template('index.html')
 
 
 # CREATE DB
 @app.route('/createdb/<dbname>', methods=['GET', 'POST'])
+@check_for_token
 def createdb(dbname):
     try:
         db = client[dbname]
@@ -50,6 +54,7 @@ def createdb(dbname):
 
 # DELETE DB
 @app.route('/deletedb/<dbname>', methods=['GET', 'DELETE'])
+@check_for_token
 def removeDB(dbname):
     try:
         client.delete_database(dbname)
@@ -61,6 +66,7 @@ def removeDB(dbname):
 
 # CREATE DOCUMENT
 @app.route('/add', methods=['POST'])
+@check_for_token
 def addTask():
     if request.method == "POST":
         usrnm = request.form['username']
@@ -87,6 +93,7 @@ def getAllTask():
 
 # SEARCH DOCUMENT by _id
 @app.route('/search/<id>', methods=['GET'])
+@check_for_token
 def opendb(id):
     doc_exist = id in mydb
     if doc_exist:
@@ -97,6 +104,7 @@ def opendb(id):
 
 # UPDATES/ ADDS NAME by _id
 @app.route('/updateuser/<id>/<username>', methods=['GET', 'PUT'])
+@check_for_token
 def updatename(id, username):
     doc_exist = id in mydb
     if doc_exist:
@@ -113,6 +121,7 @@ def updatename(id, username):
 
 # OVERRIDE COMPLETE NAME by _id
 @app.route('/updateuser/<id>/<firstname>/<lastname>', methods=['GET', 'PUT'])
+@check_for_token
 def overridename(id, firstname, lastname):
     doc_exist = id in mydb
     if doc_exist:
@@ -128,6 +137,7 @@ def overridename(id, firstname, lastname):
 
 # DELETE DOCUMENT by _id
 @app.route('/deleteuser/<id>', methods=['GET', 'DELETE'])
+@check_for_token
 def deleteUser(id):
     try:
         doc_exist = id in mydb
@@ -137,22 +147,6 @@ def deleteUser(id):
         mydoc = mydb[id]
         mydoc.delete()
         return (f" USER WITH '{id}' WAS DELETED")
-
-
-# LOGIN verification by _id
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    id = request.form['username']
-    password = request.form['password']
-    doc_exist = id in mydb
-    if doc_exist:
-        mydoc = mydb[id]
-        if password == mydoc['PASSWORD']:
-            return (f" Mr. '{mydoc['FULLNAME']}' HAS THE FOLLOWING '{mydoc['QUALIFICATION']}'")
-        else:
-            return ("INCORRECT PASSWORD")
-    else:
-        return (f"USER '{id}' NOT FOUND ")
 
 
 if __name__ == "__main__":

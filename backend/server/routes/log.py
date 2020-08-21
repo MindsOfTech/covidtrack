@@ -4,9 +4,11 @@ from cloudant.client import Cloudant
 from cloudant.query import Query
 from datetime import datetime
 import pyqrcode
-from server import app, cloud_db
+from server import app, cloud_db, check_for_token
 
-@app.route('/log/<username>', methods=['GET','POST'])
+
+@app.route('/log/<username>', methods=['GET', 'POST'])
+@check_for_token
 def log(username):
     data = request.get_json()
 
@@ -41,7 +43,7 @@ def log(username):
             now = datetime.now()
             dt_string = now.strftime("%d/%m/%Y:%H:%M")
 
-            cmpname =companyupdates(cmpidno)
+            cmpname = companyupdates(cmpidno)
 
             locationList = []
             datetimeList = []
@@ -89,13 +91,17 @@ def log(username):
 
             return ({'MESSAGE': 'Log WAS CREATED and Check in created', 'user': log['_id']})
 
+
 @app.route('/log', methods=['GET'])
+@check_for_token
 def checkget():
     username = request.args.get('username')
     name = username+'_LOG'
     return jsonify(cloud_db[name])
 
 # Updates a company's doc file on number of visits and date time of visit
+
+
 def companyupdates(name):
     cmpdoc = cloud_db[name]
     # return cmpdoc
@@ -108,7 +114,8 @@ def companyupdates(name):
     cmpdoc['Time Scanner'] = cmpdoc['Time Scanner']+datetimeList
     cmpdoc.save()
     return cmpdoc['Company Name']
-    #return({'message': 'CURRENT QTY', 'Number of Visitors': cmpdoc['Number of Visitors']})
+    # return({'message': 'CURRENT QTY', 'Number of Visitors': cmpdoc['Number of Visitors']})
+
 
 '''
 @app.route('/log/<username>', methods=['GET','POST'])

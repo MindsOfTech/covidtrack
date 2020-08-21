@@ -38,11 +38,11 @@
         },
         "cloudant": {
             "hashes": [
-                "sha256:2d9e094fcb16730e26d2913a1bb3522c26c680a5febdca4a763a6b251c396b21",
-                "sha256:dc02e1d733764fb605e178f9ee495473a733316282005de3e0eb94982f64d339"
+                "sha256:13db6dd913effc62f3a3ded9898a106e640d1e2a31de570542e772290fec0ede",
+                "sha256:afb00331a6c8593ba849294e907ebf188ee90548b1b96d0ee98669ffeb5df320"
             ],
             "index": "pypi",
-            "version": "==2.13.0"
+            "version": "==2.14.0"
         },
         "colorama": {
             "hashes": [

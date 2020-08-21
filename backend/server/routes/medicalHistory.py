@@ -4,10 +4,11 @@ from cloudant.client import Cloudant
 from cloudant.query import Query
 from datetime import datetime
 
-from server import app, cloud_db
+from server import app, cloud_db, check_for_token
 
 
 @app.route('/medicalHistory', methods=['GET', 'POST'])
+@check_for_token
 def medicalHistory():
     if request.method == 'POST':
         username = request.args.get('username')
