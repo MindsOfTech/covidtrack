@@ -4,31 +4,14 @@ from cloudant import Cloudant
 from cloudant.query import Query
 import datetime
 
-from server import app, cloud_db  # pull in Flask and database instance
+# pull in Flask and database instance
+from server import app, cloud_db, check_for_token
 import jwt
 from functools import wraps
 
-app.config['SECRET_KEY'] = 'sss'
 
-exp_time = datetime.datetime.utcnow()+datetime.timedelta(seconds=30)
+exp_time = datetime.datetime.utcnow()+datetime.timedelta(seconds=3600)
 curr_time = datetime.datetime.utcnow()
-
-
-def check_for_token(func):
-    @ wraps(func)
-    def wrapped(*args, **kwargs):
-        token = request.args.get('token')
-        if not token:
-            return jsonify({"MESSAGE": "MISSING token"}), 403
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-        except jwt.exceptions.ExpiredSignatureError:
-            return jsonify({"MESSAGE": "SEESION EXPIRED"}), 403
-        except jwt.exceptions.DecodeError:
-            return jsonify({"MESSAGE": "INVALID token"}), 403
-
-        return func(*args, **kwargs)
-    return wrapped
 
 
 @ app.route('/public')
@@ -37,25 +20,30 @@ def public():
 
 
 @ app.route('/auth')
-@ check_for_token
+@check_for_token
 def private():
     return jsonify({"message": "Welcome to covy", "Current Time": curr_time})
 
 
 @ app.route('/login', methods=['POST'])
 def login():
-    try:
-        username = request.args.get('username')
-        password = request.args.get('password')
-        # let me know is this is too tight.
-        selector = {'username': username, 'password': password, 'type': 'user'}
-        qry = cloud_db.get_query_result(selector)
-        for doc in qry:
-            data = doc['_id']
-        userdata = cloud_db[data]
-        session['logged_in'] = True
-        token = jwt.encode({'user': username, 'exp': exp_time},
-                           app.config['SECRET_KEY'])
-        return jsonify({'token': token.decode('utf-8'), "Expiration Time": exp_time,  "Current Time": curr_time})
-    except:
-        return jsonify({"MESSAGE": "LOGIN credentials ERROR - please check username and password."})
+    if request.method == 'POST':
+        try:
+            username = request.args.get('username')
+            password = request.args.get('password')
+            # let me know is this is too tight.
+            selector = {'user': username,
+                        'password': password}
+            qry = cloud_db.get_query_result(selector)
+            for doc in qry:
+                data = doc['_id']
+            userdata = cloud_db[data]
+            session['logged_in'] = True
+            #token = jwt.encode({'user': username, 'exp': exp_time},app.config['SECRET_KEY'])
+            token = jwt.encode({'user': username}, app.config['SECRET_KEY'])
+
+            return jsonify({'token': token.decode('utf-8')})
+        except:
+            return jsonify({"MESSAGE": "LOGIN credentials ERROR - please check username and password."})
+    else:
+        return jsonify({"MESSAGE": "INAPPROPRIATe REQUEST"})
