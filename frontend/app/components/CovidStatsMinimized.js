@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 
-import { View, StyleSheet, Text, Image } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { View, StyleSheet, Text, Image, Alert } from "react-native";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
-class AppCases extends Component {
-  constructor() {
-    super();
-    this.state = "";
+class CovidStatsMinimized extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
   }
   componentDidMount = () => {
     fetch("https://corona.lmao.ninja/v2/countries/Jamaica?strict&query%20", {
@@ -14,19 +14,18 @@ class AppCases extends Component {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        // console.log("data - ---------", responseJson);
         this.setState(responseJson);
       })
       .catch((error) => {
-        console.error(error);
+        console.log("error");
       });
   };
-  render(props) {
+  render() {
     return (
       <View style={styles.card}>
         <View style={styles.element}>
-          <MaterialCommunityIcons
-            name="emoticon-neutral"
+          <FontAwesome
+            name="group"
             size={35}
             style={styles.text1}
             color="#0084F8"
@@ -35,8 +34,8 @@ class AppCases extends Component {
           <Text style={styles.text2}>Confirmed</Text>
         </View>
         <View style={styles.element}>
-          <MaterialCommunityIcons
-            name="emoticon-happy"
+          <FontAwesome
+            name="heartbeat"
             size={35}
             style={styles.text1}
             color="#00B027"
@@ -46,8 +45,8 @@ class AppCases extends Component {
           <Text style={styles.text2}>Recovered</Text>
         </View>
         <View style={styles.element}>
-          <MaterialCommunityIcons
-            name="emoticon-sad"
+          <FontAwesome5
+            name="skull"
             size={35}
             style={styles.text1}
             color="#FF0F0F"
@@ -76,9 +75,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "space-evenly",
     alignItems: "center",
-    // padding: 10,
-    // marginLeft: 10,
-    // marginRight: 10,
   },
   text1: {
     justifyContent: "center",
@@ -98,4 +94,4 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
 });
-export default AppCases;
+export default CovidStatsMinimized;
