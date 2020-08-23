@@ -255,9 +255,17 @@ class HomeScreen extends React.Component {
 
 const HomeStack = createStackNavigator();
 
-function HomeStackScreen() {
+function HomeStackScreen({ navigation, route }) {
+  // Hide bottom nav bar on nested screens
+  // if (route.state && route.state.routeNames[route.state.index] === "Map" )  ---> use to hide bottom nav bar on a specific screen
+  if (route.state && route.state.index > 0) {
+    navigation.setOptions({ tabBarVisible: false });
+  } else {
+    navigation.setOptions({ tabBarVisible: true });
+  }
   return (
     <HomeStack.Navigator
+      initialRouteName="Home"
       screenOptions={{
         headerTintColor: "#00B027",
         headerTitleStyle: { color: "black" },

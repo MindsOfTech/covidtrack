@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { View, StyleSheet, Text, Image, Alert } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
 class CovidStatsMinimized extends Component {
   constructor(props) {
@@ -24,8 +24,8 @@ class CovidStatsMinimized extends Component {
     return (
       <View style={styles.card}>
         <View style={styles.element}>
-          <MaterialCommunityIcons
-            name="emoticon-neutral"
+          <FontAwesome
+            name="group"
             size={35}
             style={styles.text1}
             color="#0084F8"
@@ -34,8 +34,8 @@ class CovidStatsMinimized extends Component {
           <Text style={styles.text2}>Confirmed</Text>
         </View>
         <View style={styles.element}>
-          <MaterialCommunityIcons
-            name="emoticon-happy"
+          <FontAwesome
+            name="heartbeat"
             size={35}
             style={styles.text1}
             color="#00B027"
@@ -45,8 +45,8 @@ class CovidStatsMinimized extends Component {
           <Text style={styles.text2}>Recovered</Text>
         </View>
         <View style={styles.element}>
-          <MaterialCommunityIcons
-            name="emoticon-sad"
+          <FontAwesome5
+            name="skull"
             size={35}
             style={styles.text1}
             color="#FF0F0F"
