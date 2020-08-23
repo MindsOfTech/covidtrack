@@ -15,7 +15,6 @@ function AllNews(props) {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.newscard}>
-      <StatusBar barStyle="dark-content" />
       <TouchableOpacity
         onPress={() => {
           setModalVisible(!modalVisible);

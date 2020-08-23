@@ -6,11 +6,11 @@ import { StyleSheet, SafeAreaView, View, Dimensions } from "react-native";
 function AppBack1({ children, style }) {
   return (
     <Svg
-      width={"100%"}
-      height={"75%"}
+      width={Dimensions.get("window").width}
+      height={"500"}
       viewBox="0 0 375 477"
       fill="none"
-      style={[styles.screen, style]}
+      style={styles.screen}
     >
       <G filter="url(#prefix__filter0_d)">
         <Path
@@ -18,14 +18,20 @@ function AppBack1({ children, style }) {
           fill="#03A927"
         />
       </G>
-      <View style={[styles.view, style]}>{children}</View>
+      <View
+        style={{
+          paddingTop: 10,
+        }}
+      >
+        {children}
+      </View>
       <Defs></Defs>
     </Svg>
   );
 }
 const styles = StyleSheet.create({
   screen: {
-    paddingTop: Constants.statusBarHeight,
+    // paddingTop: Constants.statusBarHeight,
     flex: 1,
     alignSelf: "center",
   },

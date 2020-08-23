@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 
-import { View, StyleSheet, Text, Image } from "react-native";
+import { View, StyleSheet, Text, Image, Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-class AppCases extends Component {
-  constructor() {
-    super();
-    this.state = "";
+class CovidStatsMinimized extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
   }
   componentDidMount = () => {
     fetch("https://corona.lmao.ninja/v2/countries/Jamaica?strict&query%20", {
@@ -14,14 +14,13 @@ class AppCases extends Component {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        // console.log("data - ---------", responseJson);
         this.setState(responseJson);
       })
       .catch((error) => {
-        console.error(error);
+        console.log("error");
       });
   };
-  render(props) {
+  render() {
     return (
       <View style={styles.card}>
         <View style={styles.element}>
@@ -76,9 +75,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "space-evenly",
     alignItems: "center",
-    // padding: 10,
-    // marginLeft: 10,
-    // marginRight: 10,
   },
   text1: {
     justifyContent: "center",
@@ -98,4 +94,4 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
 });
-export default AppCases;
+export default CovidStatsMinimized;

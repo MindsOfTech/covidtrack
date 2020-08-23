@@ -6,7 +6,7 @@ import AppBack1 from "../components/AppBack1";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import AppTextInput from "../components/AppTextInput";
-import Appcases from "../components/AppCases";
+import CovidStatsMinimized from "../components/CovidStatsMinimized";
 
 import MapView, {
   Marker,
