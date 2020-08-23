@@ -13,6 +13,7 @@ import AppNavigator from "./app/navigator/AppNavigator";
 import ApiKeys from "./app/constants/ApiKeys";
 import * as firebase from "firebase";
 import RootNavigator from "./app/navigator/RootNavigator";
+import { NavigationContainer } from "@react-navigation/native";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -35,40 +36,39 @@ export default class App extends React.Component {
   };
 
   render() {
-    // if ( (!this.state.isLoadingComplete || !this.state.isAuthenticationReady) && !this.props.skipLoadingScreen) {
-    //   return (
-    //     <AppLoading
-    //       startAsync={this._loadResourcesAsync}
-    //       onError={this._handleLoadingError}
-    //       onFinish={this._handleFinishLoading}
-    //     />
-    //   );
-    // } else {
-    return (
-      <View style={styles.container}>
-        {Platform.OS === "ios" && <StatusBar barStyle={"light-content"} />}
-        {Platform.OS === "android" && <View style={styles.statusBarUnderlay} />}
-        {/* {this.state.isAuthenticated ? <AppNavigator /> : <RootNavigation />} */}
-        <RootNavigator />
-      </View>
-    );
+    if (
+      (!this.state.isLoadingComplete || !this.state.isAuthenticationReady) &&
+      !this.props.skipLoadingScreen
+    ) {
+      return (
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
+        />
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          {Platform.OS === "ios" && <StatusBar barStyle={"light-content"} />}
+          {Platform.OS === "android" && (
+            <View style={styles.statusBarUnderlay} />
+          )}
+          {this.state.isAuthenticated ? (
+            <NavigationContainer>
+              <AppNavigator />
+            </NavigationContainer>
+          ) : (
+            <RootNavigation />
+          )}
+        </View>
+      );
+    }
   }
 
-  // _loadResourcesAsync = async () => {
-  //   return Promise.all([
-  //     Asset.loadAsync([
-  //       require("./assets/images/robot-dev.png"),
-  //       require("./assets/images/robot-prod.png"),
-  //     ]),
-  //     Font.loadAsync({
-  //       // This is the font that we are using for our tab bar
-  //       ...Ionicons.font,
-  //       // We include SpaceMono because we use it in HomeScreen.js. Feel free
-  //       // to remove this if you are not using it in your app
-  //       "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
-  //     }),
-  //   ]);
-  // };
+  _loadResourcesAsync = async () => {
+    return Promise.all([]);
+  };
 
   _handleLoadingError = (error) => {
     // In this case, you might want to report the error to your error

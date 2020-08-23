@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { HomeStackScreen } from "./../screens/Home";
 import Checkup from "../screens/Checkup";
 
@@ -24,7 +24,8 @@ function AppNavigator() {
         component={HomeStackScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            // <MaterialCommunityIcons name="home" color={color} size={size} />
+            <FontAwesome5 name="home" size={size} color={color} />
           ),
         }}
       />
@@ -33,7 +34,7 @@ function AppNavigator() {
         component={Checkup}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="doctor" color={color} size={size} />
+            <FontAwesome5 name="user-nurse" size={size} color={color} />
           ),
         }}
       />

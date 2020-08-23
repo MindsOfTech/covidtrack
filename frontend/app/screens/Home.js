@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   StyleSheet,
@@ -18,7 +18,9 @@ import Checkup from "./Checkup";
 import Statistics from "./Statistics";
 import Visited from "./Visited";
 import ModalScan from "../components/Scan";
-
+import AppButton from "../components/AppButton";
+import defaultStyles from "./../config/styles";
+import * as firebase from "firebase";
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -79,6 +81,9 @@ class HomeScreen extends React.Component {
       />
     ));
   };
+  onSignoutPress = () => {
+    firebase.auth().signOut();
+  };
   render() {
     return (
       // Try setting `flexDirection` to `column`.
@@ -129,7 +134,7 @@ class HomeScreen extends React.Component {
                 <View style={styles.card2}>
                   <Text>Updated : Today</Text>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate("Statistics")}
+                    onPress={() => this.props.navigation.navigate("Statistics")}
                   >
                     <View style={styles.sbutton}>
                       <Text
@@ -237,6 +242,11 @@ class HomeScreen extends React.Component {
               <this.loadNews />
             </ScrollView>
           </View>
+          <AppButton
+            title="Logout"
+            color={defaultStyles.colors.red}
+            onPress={this.onSignoutPress}
+          />
         </ScrollView>
       </View>
     );
@@ -359,7 +369,7 @@ const styles = StyleSheet.create({
 
   card5: {
     flexDirection: "row",
-    backgroundColor: "#59c26F",
+    backgroundColor: defaultStyles.colors.primary,
     justifyContent: "space-between",
     alignItems: "center",
     paddingTop: 30,
@@ -429,7 +439,7 @@ const styles = StyleSheet.create({
   sbutton: {
     alignContent: "center",
     justifyContent: "center",
-    backgroundColor: "#59c26F",
+    backgroundColor: defaultStyles.colors.primary,
     color: "white",
     paddingLeft: 10,
     paddingRight: 10,

@@ -29,7 +29,10 @@ export default class LoginScreen extends React.Component {
           this.props.navigation.navigate("Main");
         },
         (error) => {
-          Alert.alert(error.message);
+          Alert.alert(
+            "Invalid email or password combination",
+            "please try again"
+          );
         }
       );
   };
