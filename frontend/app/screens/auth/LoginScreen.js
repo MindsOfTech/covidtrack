@@ -11,12 +11,31 @@ import AppBack1 from "./../../components/AppBack1";
 import AppButton from "./../../components/AppButton";
 import AppTextInput from "./../../components/AppTextInput";
 import defaultStyles from "./../../config/styles";
-export default class LoginScreen extends React.Component {
+import { connect } from "react-redux";
+import { setUserName } from "./../../redux/app-redux";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
+const mapStateToProps = (state) => {
+  return {
+    userName: state.userName,
+  };
+};
+
+const MatchDispatchToProps = (dispatch) => {
+  return {
+    setUserName: (text) => {
+      dispatch(setUserName(text));
+    },
+  };
+};
+class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
+      forgotPasswordBg: defaultStyles.colors.lightGrey,
+      forgotPasswordText: defaultStyles.colors.grey,
     };
   }
 
@@ -25,14 +44,22 @@ export default class LoginScreen extends React.Component {
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(
-        () => {
+        (response) => {
+          this.props.setUserName(this.state.email);
           this.props.navigation.navigate("Main");
         },
         (error) => {
-          Alert.alert(
-            "Invalid email or password combination",
-            "please try again"
-          );
+          this.setState({ forgotPasswordText: defaultStyles.colors.black });
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          if (errorCode === "auth/wrong-password") {
+            Alert.alert("Incorrect password.", "please try again");
+          } else {
+            Alert.alert(
+              "Invalid email or password combination",
+              "please try again"
+            );
+          }
         }
       );
   };
@@ -41,15 +68,9 @@ export default class LoginScreen extends React.Component {
     this.props.navigation.navigate("Sign Up");
   };
 
-  // onForgotPasswordPress = () => {
-  //   var navActions = StackNavigationOptions.reset({
-  //     index: 0,
-  //     actions: [
-  //       StackNavigationOptions.navigate({ routeName: "ForgotPassword" }),
-  //     ],
-  //   });
-  //   this.props.navigation.dispatch(navActions);
-  // };
+  onForgotPasswordPress = () => {
+    this.props.navigation.navigate("Forgot Password");
+  };
 
   render() {
     return (
@@ -59,7 +80,7 @@ export default class LoginScreen extends React.Component {
             <Text style={styles.title}>Covy</Text>
             <Text style={styles.subtitle}>Good health starts with you.</Text>
           </AppBack1>
-          <View style={{ position: "fixed", bottom: 50 }}>
+          <View style={{ position: "fixed", bottom: 80 }}>
             <AppTextInput
               autoCapitalise="none"
               autoCorrect={false}
@@ -95,12 +116,29 @@ export default class LoginScreen extends React.Component {
               color={defaultStyles.colors.grey}
               onPress={this.onCreateAccountPress}
             />
+            <TouchableOpacity
+              style={[
+                styles.forgotPassword,
+                { backgroundColor: this.state.forgotPasswordBg },
+              ]}
+              onPress={this.onForgotPasswordPress}
+            >
+              <Text
+                style={[
+                  styles.forgotPasswordText,
+                  { color: this.state.forgotPasswordText },
+                ]}
+              >
+                Forgot Password
+              </Text>
+            </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
       </View>
     );
   }
 }
+export default connect(mapStateToProps, MatchDispatchToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -110,7 +148,19 @@ const styles = StyleSheet.create({
     color: "white",
     flex: 1,
   },
+  forgotPassword: {
+    marginTop: 20,
+    alignSelf: "center",
 
+    borderRadius: 3,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  forgotPasswordText: {
+    padding: 5,
+    fontSize: 18,
+    // backgroundColor: "red",
+  },
   title: {
     fontWeight: "bold",
     fontSize: 80,

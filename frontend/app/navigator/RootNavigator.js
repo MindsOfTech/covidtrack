@@ -6,6 +6,7 @@ import AppNavigator from "./AppNavigator";
 
 import LoginScreen from "./../screens/auth/LoginScreen";
 import SignupScreen from "../screens/auth/SignupScreen";
+import ForgotPasswordScreen from "../screens/auth/ForgotPasswordScreen";
 import { NavigationContainer } from "@react-navigation/native";
 // import ForgotPasswordScreen from "./../screens/auth/ForgotPasswordScreen";
 
@@ -24,6 +25,10 @@ function RootStackNavigatorScreen() {
       >
         <RootStackNavigator.Screen name="Login" component={LoginScreen} />
         <RootStackNavigator.Screen name="Sign Up" component={SignupScreen} />
+        <RootStackNavigator.Screen
+          name="Forgot Password"
+          component={ForgotPasswordScreen}
+        />
         <RootStackNavigator.Screen name="Main" component={AppNavigator} />
       </RootStackNavigator.Navigator>
     </NavigationContainer>

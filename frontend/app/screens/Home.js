@@ -21,6 +21,22 @@ import ModalScan from "../components/Scan";
 import AppButton from "../components/AppButton";
 import defaultStyles from "./../config/styles";
 import * as firebase from "firebase";
+import { connect } from "react-redux";
+import { setUserName } from "./../redux/app-redux";
+
+const mapStateToProps = (state) => {
+  return {
+    userName: state.userName,
+  };
+};
+
+const MatchDispatchToProps = (dispatch) => {
+  return {
+    setUserName: (text) => {
+      dispatch(setUserName(text));
+    },
+  };
+};
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -89,7 +105,7 @@ class HomeScreen extends React.Component {
       // Try setting `flexDirection` to `column`.
       <View style={{ flex: 1, backgroundColor: "white" }}>
         <View style={styles.card5}>
-          <Text style={styles.textsalut}>Hello Peter</Text>
+          <Text style={styles.textsalut}>Hello {this.props.userName}</Text>
           <View
             style={{
               width: 100,
@@ -274,7 +290,7 @@ function HomeStackScreen({ navigation, route }) {
       <HomeStack.Screen
         options={{ headerShown: false }}
         name="Home"
-        component={HomeScreen}
+        component={connect(mapStateToProps, MatchDispatchToProps)(HomeScreen)}
       />
       <HomeStack.Screen name="Checkup" component={Checkup} />
       <HomeStack.Screen name="Map" component={MapFull} />
@@ -551,4 +567,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export { HomeScreen, HomeStackScreen };
+// export { HomeScreen, HomeStackScreen };
+export default HomeStackScreen;

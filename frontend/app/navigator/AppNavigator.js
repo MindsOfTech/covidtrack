@@ -1,7 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { HomeStackScreen } from "./../screens/Home";
+import HomeStackScreen from "./../screens/Home";
 import Checkup from "../screens/Checkup";
 
 const AppNavigatorTab = createBottomTabNavigator();
@@ -14,6 +14,7 @@ const tabBarOptions = {
     backgroundColor: "#FFFFFF",
     paddingTop: 5,
   },
+  showLabel: false,
 };
 
 function AppNavigator() {

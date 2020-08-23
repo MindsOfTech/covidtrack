@@ -13,21 +13,48 @@ import AppButton from "./../../components/AppButton";
 import AppTextInput from "./../../components/AppTextInput";
 import * as firebase from "firebase";
 import defaultStyles from "./../../config/styles";
-export default class SignupScreen extends React.Component {
+import { connect } from "react-redux";
+import { setUserName } from "./../../redux/app-redux";
+
+const mapStateToProps = (state) => {
+  return {
+    userName: state.userName,
+  };
+};
+
+const MatchDispatchToProps = (dispatch) => {
+  return {
+    setUserName: (text) => {
+      dispatch(setUserName(text));
+    },
+  };
+};
+
+class SignupScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       password: "",
       passwordConfirm: "",
-      errIcon: defaultStyles.colors.black,
+      passwordValidate: defaultStyles.colors.black,
+      emailValidate: defaultStyles.colors.black,
+      emailIsValid: false,
     };
   }
 
   onSignupPress = () => {
+    if (this.state.email == "") {
+      Alert.alert("Please enter an email address");
+      return;
+    }
+    if (this.state.password == "") {
+      Alert.alert("Please enter a password");
+      return;
+    }
     if (this.state.password !== this.state.passwordConfirm) {
       Alert.alert("Passwords do not match");
-      this.setState({ errIcon: defaultStyles.colors.red });
+      this.setState({ passwordValidate: defaultStyles.colors.red });
       return;
     }
 
@@ -35,11 +62,31 @@ export default class SignupScreen extends React.Component {
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(
-        () => {
+        (response) => {
+          this.props.setUserName(this.state.email);
           this.props.navigation.navigate("Main");
         },
         (error) => {
-          Alert.alert(error.message);
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          switch (errorCode) {
+            case "auth/weak-password":
+              Alert.alert(
+                "Password is too weak",
+                "Must be at least 8 characters and contain a number"
+              );
+              return;
+            case "auth/email-already-in-use":
+              Alert.alert("Email already in use", "Please try another email");
+              return;
+            case "auth/invalid-email":
+              Alert.alert("Email invalid", "Please enter a valid email");
+              return;
+
+            default:
+              Alert.alert(errorMessage);
+              return;
+          }
         }
       );
   };
@@ -62,18 +109,21 @@ export default class SignupScreen extends React.Component {
               autoCorrect={false}
               keyboardType="email-address"
               icon="email"
+              iconColor={this.state.emailValidate}
               placeholder="Your Email"
               textContentType="emailAddress"
               value={this.state.email}
               onChangeText={(text) => {
-                this.setState({ email: text });
+                this.setState({
+                  email: text,
+                });
               }}
             />
             <AppTextInput
               autoCapitalise="none"
               autoCorrect={false}
               icon="lock"
-              iconColor={this.state.errIcon}
+              iconColor={this.state.passwordValidate}
               placeholder="Your Password"
               textContentType="emailAddress"
               secureTextEntry={true}
@@ -88,7 +138,7 @@ export default class SignupScreen extends React.Component {
               autoCapitalise="none"
               autoCorrect={false}
               icon="lock"
-              iconColor={this.state.errIcon}
+              iconColor={this.state.passwordValidate}
               placeholder="Confirm Password"
               textContentType="emailAddress"
               secureTextEntry={true}
@@ -96,7 +146,7 @@ export default class SignupScreen extends React.Component {
               onChangeText={(text) => {
                 this.setState({
                   passwordConfirm: text,
-                  errIcon:
+                  passwordValidate:
                     text == this.state.password
                       ? defaultStyles.colors.primary
                       : defaultStyles.colors.red,
@@ -120,6 +170,8 @@ export default class SignupScreen extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, MatchDispatchToProps)(SignupScreen);
 
 const styles = StyleSheet.create({
   container: {

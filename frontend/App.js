@@ -14,7 +14,8 @@ import ApiKeys from "./app/constants/ApiKeys";
 import * as firebase from "firebase";
 import RootNavigator from "./app/navigator/RootNavigator";
 import { NavigationContainer } from "@react-navigation/native";
-
+import { Provider } from "react-redux";
+import { store } from "./app/redux/app-redux";
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -49,19 +50,21 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <View style={styles.container}>
-          {Platform.OS === "ios" && <StatusBar barStyle={"light-content"} />}
-          {Platform.OS === "android" && (
-            <View style={styles.statusBarUnderlay} />
-          )}
-          {this.state.isAuthenticated ? (
-            <NavigationContainer>
-              <AppNavigator />
-            </NavigationContainer>
-          ) : (
-            <RootNavigation />
-          )}
-        </View>
+        <Provider store={store}>
+          <View style={styles.container}>
+            {Platform.OS === "ios" && <StatusBar barStyle={"light-content"} />}
+            {Platform.OS === "android" && (
+              <View style={styles.statusBarUnderlay} />
+            )}
+            {this.state.isAuthenticated ? (
+              <NavigationContainer>
+                <AppNavigator />
+              </NavigationContainer>
+            ) : (
+              <RootNavigation />
+            )}
+          </View>
+        </Provider>
       );
     }
   }
