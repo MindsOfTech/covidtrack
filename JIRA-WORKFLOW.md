@@ -7,9 +7,9 @@
 
 - When a new ticket is created, it will have a ticket number such as COVY-15 and a title like **"Setup Jira Automation"**.
 - Create a new branch from **dev** inluding the ticket number in the name in the format "feature/ticket-number"
-  - Example **Jira-Automation/CV-15**
+  - Example **Jira-Automation/COVY-15**
   ```sh
-  $ git checkout -b Jira-Automation/CV-15
+  $ git checkout -b Jira-Automation/COVY-15
   ```
 - You can now begin working from this branch and add commits, each commit will be reflected in **Jira** automatically for project tracking **once the ticket ID is inlcuded in the commit message**.
 - A new branch will automatically move that ticket into the **IN PROGRESS** phase.
