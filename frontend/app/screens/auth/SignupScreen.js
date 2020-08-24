@@ -14,19 +14,11 @@ import AppTextInput from "./../../components/AppTextInput";
 import * as firebase from "firebase";
 import defaultStyles from "./../../config/styles";
 import { connect } from "react-redux";
-import { setUserName } from "./../../redux/app-redux";
+import { setUser } from "./../../redux/actions/setUserActions";
 
 const mapStateToProps = (state) => {
   return {
-    userName: state.userName,
-  };
-};
-
-const MatchDispatchToProps = (dispatch) => {
-  return {
-    setUserName: (text) => {
-      dispatch(setUserName(text));
-    },
+    email: state.user,
   };
 };
 
@@ -63,7 +55,7 @@ class SignupScreen extends React.Component {
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(
         (response) => {
-          this.props.setUserName(this.state.email);
+          this.props.dispatch(setUser(this.state.email));
           this.props.navigation.navigate("Main");
         },
         (error) => {
@@ -171,7 +163,7 @@ class SignupScreen extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, MatchDispatchToProps)(SignupScreen);
+export default connect(mapStateToProps, null)(SignupScreen);
 
 const styles = StyleSheet.create({
   container: {

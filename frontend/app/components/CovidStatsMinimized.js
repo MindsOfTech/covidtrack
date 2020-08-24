@@ -1,26 +1,44 @@
-import React, { Component } from "react";
-
-import { View, StyleSheet, Text, Image, Alert } from "react-native";
+import React from "react";
+import { View, StyleSheet, Text, Image } from "react-native";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import { connect } from "react-redux";
+import { fetchStats } from "./../redux/actions/statsActions";
 
-class CovidStatsMinimized extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  componentDidMount = () => {
-    fetch("https://corona.lmao.ninja/v2/countries/Jamaica?strict&query%20", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState(responseJson);
-      })
-      .catch((error) => {
-        console.log("error");
-      });
+const mapStateToProps = (state) => {
+  return {
+    stats: state.stats,
+    loading: state.loading,
+    error: state.error,
   };
+};
+class CovidStatsMinimized extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(fetchStats());
+  }
   render() {
+    const error = this.props.stats.error;
+    const loading = this.props.stats.loading;
+    const stats = this.props.stats.stats;
+
+    if (error) {
+      return (
+        <View style={styles.errorContainer}>
+          <FontAwesome5 name="sad-cry" color={"red"} size={30}></FontAwesome5>
+          <View style={{ width: 20 }}></View>
+          <Text>There was an error loading data</Text>
+        </View>
+      );
+    }
+    if (loading) {
+      return (
+        <View style={styles.loaderContainer}>
+          <Image
+            style={styles.loader}
+            source={require("./../assets/loader.gif")}
+          />
+        </View>
+      );
+    }
     return (
       <View style={styles.card}>
         <View style={styles.element}>
@@ -30,7 +48,9 @@ class CovidStatsMinimized extends Component {
             style={styles.text1}
             color="#0084F8"
           />
-          <Text style={styles.text1}>{this.state.cases || 100}</Text>
+          <Text style={styles.text1}>
+            {stats.cases ? stats.cases.toLocaleString() : 0}
+          </Text>
           <Text style={styles.text2}>Confirmed</Text>
         </View>
         <View style={styles.element}>
@@ -41,7 +61,9 @@ class CovidStatsMinimized extends Component {
             color="#00B027"
           />
 
-          <Text style={styles.text1}>{this.state.recovered || 100}</Text>
+          <Text style={styles.text1}>
+            {stats.recovered ? stats.recovered.toLocaleString() : 0}
+          </Text>
           <Text style={styles.text2}>Recovered</Text>
         </View>
         <View style={styles.element}>
@@ -52,7 +74,9 @@ class CovidStatsMinimized extends Component {
             color="#FF0F0F"
           />
 
-          <Text style={styles.text1}>{this.state.deaths || 100}</Text>
+          <Text style={styles.text1}>
+            {stats.deaths ? stats.deaths.toLocaleString() : 0}
+          </Text>
           <Text style={styles.text2}>Deaths</Text>
         </View>
       </View>
@@ -66,6 +90,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     textAlignVertical: "center",
     flex: 1,
+  },
+  loader: { width: 50, height: 50 },
+  loaderContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  errorContainer: {
+    paddingTop: 20,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   card: {
     marginTop: 15,
@@ -94,4 +130,4 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
 });
-export default CovidStatsMinimized;
+export default connect(mapStateToProps, null)(CovidStatsMinimized);
