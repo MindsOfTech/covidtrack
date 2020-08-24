@@ -5,12 +5,5 @@ export default (async function fetchCovidStatsAsync() {
   // return covid stats from endpoint
   return fetch(COVID_STATS_ENDPOINT, {
     method: "GET",
-  })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      //   TODO: update store
-    })
-    .catch((error) => {
-      console.log("error");
-    });
+  });
 });

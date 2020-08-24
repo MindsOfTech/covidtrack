@@ -12,22 +12,15 @@ import AppButton from "./../../components/AppButton";
 import AppTextInput from "./../../components/AppTextInput";
 import defaultStyles from "./../../config/styles";
 import { connect } from "react-redux";
-import { setUserName } from "./../../redux/app-redux";
+import { setUser } from "./../../redux/actions/setUserActions";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const mapStateToProps = (state) => {
   return {
-    userName: state.userName,
+    email: state.user,
   };
 };
 
-const MatchDispatchToProps = (dispatch) => {
-  return {
-    setUserName: (text) => {
-      dispatch(setUserName(text));
-    },
-  };
-};
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -45,7 +38,7 @@ class LoginScreen extends React.Component {
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(
         (response) => {
-          this.props.setUserName(this.state.email);
+          this.props.dispatch(setUser(this.state.email));
           this.props.navigation.navigate("Main");
         },
         (error) => {
@@ -138,7 +131,7 @@ class LoginScreen extends React.Component {
     );
   }
 }
-export default connect(mapStateToProps, MatchDispatchToProps)(LoginScreen);
+export default connect(mapStateToProps, null)(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {

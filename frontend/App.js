@@ -15,7 +15,7 @@ import * as firebase from "firebase";
 import RootNavigator from "./app/navigator/RootNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
-import { store } from "./app/redux/app-redux";
+import store from "./app/redux/store";
 export default class App extends React.Component {
   constructor(props) {
     super(props);

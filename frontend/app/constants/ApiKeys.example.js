@@ -7,4 +7,5 @@ export default {
     storageBucket: "",
     messagingSenderId: "",
   },
+  NewsApiKey: "",
 };

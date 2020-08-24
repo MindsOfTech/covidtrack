@@ -22,90 +22,33 @@ import AppButton from "../components/AppButton";
 import defaultStyles from "./../config/styles";
 import * as firebase from "firebase";
 import { connect } from "react-redux";
-import { setUserName } from "./../redux/app-redux";
 
 const mapStateToProps = (state) => {
   return {
-    userName: state.userName,
+    user: state.user,
   };
 };
 
-const MatchDispatchToProps = (dispatch) => {
-  return {
-    setUserName: (text) => {
-      dispatch(setUserName(text));
-    },
-  };
-};
 class HomeScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      newsModalVisible: false,
-      news: [
-        {
-          key: 3,
-          title: "Shared Housing",
-          date: "July 10, 2020",
-          snippet: `Shared or congregate housing includes apartments, condominiums, student or faculty housing, national and state park staff housing, transitional housing, and domestic violence and abuse shelters`,
-          content: `Shared or congregate housing includes apartments, condominiums, student or faculty housing, national and state park staff housing, transitional housing, and domestic violence and abuse shelters. Shared or congregate housing includes apartments, condominiums, student or faculty housing, national and state park staff housing, transitional housing, and domestic violence and abuse shelters. Shared or congregate housing includes apartments, condominiums, student or faculty housing, national and state park staff housing, transitional housing, and domestic violence and abuse shelters.`,
-          tags: [
-            { name: "Verified", verified: true },
-            { name: "Intl", verified: true },
-            { name: "CDC", verified: true },
-          ],
-        },
-        {
-          key: 2,
-          title: "New Cases",
-          date: "June 18, 2020",
-          snippet: `Jamaica has recorded one new case of COVID-19 in the last 24 hours. This brings to 856 the total number of confirmed positives for the island. The new case, which has been classified as imported, is of an adult female from Clarendon. There are now 321 imported cases; 246 cases`,
-          content: `Jamaica has recorded one new case of COVID-19 in the last 24 hours. This brings to 856 the total number of confirmed positives for the island. The new case, which has been classified as imported, is of an adult female from Clarendon. There are now 321 imported cases; 246 cases that are contacts of confirmed cases; 44 local transmission cases not epidemiologically linked; 236 cases that are related to the workplace cluster in St. Catherine; and nine (9) cases under investigation. Some 485 or 57% of the confirmed cases are females and 371 or 43% are males, with ages ranging from two (2) months to 87 years. Of the 856 cases confirmed with COVID-19 to date 724 or 84.8% have recovered, 46 or 5.4% were repatriated, and 10 or 1.2% have died. There are 76 (8.8%) active cases currently under observation, including two moderately ill persons. There are no critically ill cases at this time.`,
-          tags: [
-            { name: "Verified", verified: true },
-            { name: "Local", verified: true },
-            { name: "MOH", verified: true },
-          ],
-        },
-        {
-          key: 1,
-          title: "Island Curfew",
-          date: "May 01, 2020",
-          snippet: `The 12-hour curfew which currently runs from 6pm to 6am each day will be adjusted as of Wednesday, May 13 to reflect the new times of 8pm to 5am each day until Sunday May 24, the day before the Labour Day holiday which will be observed on Monday, May 25`,
-          content: `The 12-hour curfew which currently runs from 6pm to 6am each day will be adjusted as of Wednesday, May 13 to reflect the new times of 8pm to 5am each day until Sunday May 24, the day before the Labour Day holiday which will be observed on Monday, May 25. For the Labour Day holiday period which begins on the Sunday, the curfew will be tightened and will run from 3pm Sunday, May 24 until 8am on Labour Day. On Labour Day, the curfew will commence at 3pm and will run until 5am on Tuesday, May 26. Prime Minister Andrew Holness made the announcement Monday evening as he addressed a virtual COVID-19 press conference from Jamaica House. He noted that the tightening of the curfew over the Labour Day period will be similar to what obtained over the Easter holiday period to limit the spread of the novel coronavirus.`,
-          tags: [
-            { name: "Verified", verified: true },
-            { name: "Local", verified: true },
-            { name: "MOH", verified: true },
-          ],
-        },
-      ],
-    };
-  }
-  onComponentDidMount() {
-    this.loadNews;
-  }
-  loadNews = () => {
-    return this.state.news.map((info, index) => (
-      <NewsItem
-        key={index}
-        title={info.title}
-        date={info.date}
-        snippet={info.snippet}
-        content={info.content}
-        tags={info.tags}
-      />
-    ));
-  };
   onSignoutPress = () => {
     firebase.auth().signOut();
   };
+  componentDidMount() {}
+
   render() {
+    // if (error) {
+    //   return <Text>Error! fetching data: {error}</Text>;
+    // }
+
+    // if (loading) {
+    //   return <Text>Loading...</Text>;
+    // }
+    console.log(this.props.user);
     return (
       // Try setting `flexDirection` to `column`.
       <View style={{ flex: 1, backgroundColor: "white" }}>
         <View style={styles.card5}>
-          <Text style={styles.textsalut}>Hello {this.props.userName}</Text>
+          <Text style={styles.textsalut}>Hello {this.props.user.user}</Text>
           <View
             style={{
               width: 100,
@@ -250,13 +193,7 @@ class HomeScreen extends React.Component {
               </View>
             </View>
 
-            <AllNews content={<this.loadNews />}></AllNews>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-              <this.loadNews />
-            </ScrollView>
+            <AllNews></AllNews>
           </View>
           <AppButton
             title="Logout"
@@ -290,7 +227,7 @@ function HomeStackScreen({ navigation, route }) {
       <HomeStack.Screen
         options={{ headerShown: false }}
         name="Home"
-        component={connect(mapStateToProps, MatchDispatchToProps)(HomeScreen)}
+        component={connect(mapStateToProps)(HomeScreen)}
       />
       <HomeStack.Screen name="Checkup" component={Checkup} />
       <HomeStack.Screen name="Map" component={MapFull} />
