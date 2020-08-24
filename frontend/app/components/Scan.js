@@ -11,9 +11,8 @@ import {
   Alert,
   Image,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 
 function ModalScan(props) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -61,19 +60,6 @@ function ModalScan(props) {
     } catch (err) {
       console.log("Error fetching data-----------", err);
     }
-    // fetch(`http://covy-backend.mybluemix.net/symptoms/${test.user}`, {
-    //   method: "GET",
-    // })
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     setTemp(
-    //       responseJson.results[responseJson.results.length - 1].report.lastTemp
-    //     );
-    //     // this.setState(responseJson);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
   };
   const close = () => {
     setModalVisible(!modalVisible);
@@ -176,12 +162,15 @@ function ModalScan(props) {
                   left: 0,
                   top: 0,
                   backgroundColor: "white",
-                  padding: 20,
-                  paddingTop: 30,
+                  padding: 25,
                 }}
               >
                 <View
                   style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                     width: "100%",
                     alignItems: "flex-start",
                   }}
@@ -194,14 +183,16 @@ function ModalScan(props) {
                       setModalVisible(!modalVisible);
                     }}
                   >
-                    <MaterialCommunityIcons
-                      name="close"
-                      size={25}
+                    <FontAwesome5
+                      name="arrow-left"
+                      size={22}
                       color="black"
-                      sty
-                    />
-                    <Text style={styles.textStyle}>Done</Text>
+                    ></FontAwesome5>
                   </TouchableOpacity>
+                  <Text style={styles.textHeader}>
+                    Scan QR code to check in
+                  </Text>
+                  <Text style={styles.textStyle}></Text>
                 </View>
               </View>
             </View>
@@ -337,7 +328,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: "100%",
-    height: "100%",
+    height: "96%",
     backgroundColor: "white",
     borderTopEndRadius: 10,
     borderTopStartRadius: 10,
@@ -362,6 +353,14 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: "bold",
     textAlign: "center",
+    alignSelf: "center",
+  },
+  textHeader: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 20,
+    textAlign: "center",
+    alignSelf: "center",
   },
   modalText: {
     marginBottom: 15,

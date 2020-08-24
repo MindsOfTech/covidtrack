@@ -14,8 +14,8 @@ import { CheckBox, Divider, Slider } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 
 class Checkup extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       fever: false,
       headache: false,
@@ -91,7 +91,6 @@ class Checkup extends Component {
   render(navigation) {
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
         <Text style={{ textAlign: "center", fontSize: 30, padding: 20 }}>
           Lets see how you're doing!
         </Text>

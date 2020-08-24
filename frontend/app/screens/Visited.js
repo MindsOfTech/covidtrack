@@ -1,23 +1,12 @@
-import React, { Component, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-  Picker,
-  StatusBar,
-  Image,
-} from "react-native";
+import React, { Component } from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { CheckBox, Divider, Slider } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
-import Checkup from "./Checkup";
 
 class Visited extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       data: {
         CompanyName: [],
@@ -33,15 +22,14 @@ class Visited extends Component {
       method: "GET",
     })
       .then((response) => response.blob())
-      .then((responseJson) => {
-        // this.setState(responseJson);
-        // console.log(responseJson);
-        var outside = URL.createObjectURL(responseJson);
+      .then((responseBlob) => {
+        var outside = URL.createObjectURL(responseBlob);
         this.setState({ image: outside });
       })
       .catch((error) => {
         console.error(error);
       });
+
     fetch("http://covy-backend.mybluemix.net/log/psmith", {
       method: "GET",
     })
@@ -52,16 +40,6 @@ class Visited extends Component {
       .catch((error) => {
         console.error(error);
       });
-    // try {
-    //   //Assign the promise unresolved first then get the data using the json method.
-    //   const pokemonApiCall = await fetch(
-    //     "http://covy-backend.mybluemix.net/qrUser/hellokitty98"
-    //   );
-    //   const pokemon = await pokemonApiCall.blob();
-    //   console.log(pokemon);
-    // } catch (err) {
-    //   console.log("Error fetching data-----------", err);
-    // }
   }
   renderDate(args) {
     var date = args.split(":")[0].split("/");
@@ -72,7 +50,7 @@ class Visited extends Component {
       ` @ ${args.split(":")[1]}:${args.split(":")[2]}`
     );
   }
-  render(navigation) {
+  render() {
     var qri = (
       <Image
         source={{
@@ -131,7 +109,6 @@ class Visited extends Component {
     }
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
         <Text
           style={{
             textAlign: "center",
@@ -161,19 +138,6 @@ class Visited extends Component {
   }
 }
 
-// function VisitedComp({ navigation }) {
-//   const Visited = new Visited();
-//   return Visited.render(navigation);
-// }
-// const VisitedStack = createStackNavigator();
-// function Visited() {
-//   return (
-//     <VisitedStack.Navigator>
-//       <VisitedStack.Screen name="Visited" component={VisitedComp} />
-//       <VisitedStack.Screen name="Statistics" component={Statistics} />
-//     </VisitedStack.Navigator>
-//   );
-// }
 export default Visited;
 
 const styles = StyleSheet.create({

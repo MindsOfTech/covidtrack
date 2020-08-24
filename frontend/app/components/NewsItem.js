@@ -81,6 +81,20 @@ function NewsItem(props) {
               {props.title}
               <Text style={styles.date}> - {props.date}</Text>
             </Text>
+            <View
+              style={{
+                flexDirection: "row-reverse",
+                alignSelf: "flex-start",
+                justifyContent: "flex-end",
+                marginTop: 10,
+                marginBottom: 10,
+                marginLeft: 0,
+                alignItems: "flex-end",
+                alignContent: "center",
+              }}
+            >
+              {taglist}
+            </View>
             <ScrollView>
               <Text style={styles.modalText}>{props.content}</Text>
             </ScrollView>
@@ -112,7 +126,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginLeft: 10,
     marginRight: 10,
-    height: 250,
+    minHeight: 200,
     marginTop: 10,
     marginBottom: 10,
 
@@ -128,6 +142,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width - 20,
   },
   texthead: {
+    fontSize: 18,
     fontWeight: "bold",
     margin: 5,
   },
@@ -135,8 +150,10 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     margin: 5,
     fontStyle: "italic",
+    fontSize: 16,
   },
   snippet: {
+    fontSize: 16,
     fontWeight: "400",
     lineHeight: 25,
     margin: 5,
@@ -180,6 +197,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     marginTop: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.63)",
   },
   modalView: {
     position: "absolute",
@@ -207,14 +225,18 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   textStyle: {
+    fontSize: 18,
     color: "black",
     fontWeight: "bold",
     textAlign: "center",
   },
   modalText: {
+    fontSize: 16,
     marginBottom: 15,
     lineHeight: 25,
     textAlign: "left",
+    lineHeight: 35,
+    paddingTop: 10,
   },
 });
 export default NewsItem;

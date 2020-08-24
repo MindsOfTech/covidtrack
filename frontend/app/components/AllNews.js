@@ -5,82 +5,136 @@ import {
   Text,
   TouchableOpacity,
   Modal,
-  Dimensions,
-  StatusBar,
+  Image,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
+import { fetchNews } from "./../redux/actions/newsActions";
+import { connect } from "react-redux";
+import NewsItem from "./NewsItem";
+const mapStateToProps = (state) => {
+  return {
+    news: state.news,
+    loading: state.loading,
+    error: state.error,
+  };
+};
 
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-function AllNews(props) {
-  const [modalVisible, setModalVisible] = useState(false);
-  return (
-    <View style={styles.newscard}>
-      <StatusBar barStyle="dark-content" />
-      <TouchableOpacity
-        onPress={() => {
-          setModalVisible(!modalVisible);
-        }}
-        style={styles.cta}
-      >
-        <Text style={styles.sectiontitle}>Recent News</Text>
-        <Text style={styles.ctaText}>View all</Text>
-      </TouchableOpacity>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        // onRequestClose={() => {
-        //   Alert.alert("Modal has been closed.");
-        // }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingTop: 22,
-                paddingBottom: 10,
-              }}
-            >
+class AllNews extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalVisible: false,
+    };
+  }
+  componentDidMount() {
+    this.props.dispatch(fetchNews());
+  }
+
+  render() {
+    const error = this.props.news.error;
+    const loading = this.props.news.loading;
+    const news = this.props.news.news;
+    if (error) {
+      return (
+        <View style={styles.errorContainer}>
+          <FontAwesome5 name="sad-cry" color={"red"} size={30}></FontAwesome5>
+          <View style={{ width: 20 }}></View>
+          <Text>There was an error loading news</Text>
+        </View>
+      );
+    }
+    if (loading) {
+      return (
+        <View style={styles.loaderContainer}>
+          <Image
+            style={styles.loader}
+            source={require("./../assets/loader.gif")}
+          />
+        </View>
+      );
+    }
+    const loadNews = () => {
+      return news.map((info, index) => (
+        <NewsItem
+          key={index}
+          title={info.title}
+          date={info.date}
+          snippet={info.snippet}
+          content={info.content}
+          tags={info.tags}
+        />
+      ));
+    };
+
+    return (
+      <View style={styles.newscard}>
+        <TouchableOpacity
+          onPress={() => {
+            this.setState((prevState) => ({
+              modalVisible: !prevState.modalVisible,
+            }));
+          }}
+          style={styles.cta}
+        >
+          <Text style={styles.sectiontitle}>Recent News</Text>
+          <Text style={styles.ctaText}>View all</Text>
+        </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          // onRequestClose={() => {
+          //   Alert.alert("Modal has been closed.");
+          // }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
               <View
                 style={{
-                  position: "absolute",
-                  left: 10,
-                  top: 15,
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: 25,
                 }}
               >
-                <TouchableOpacity
-                  style={{
-                    color: "black",
-                    // backgroundColor: "#59c26F",
-                  }}
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    name="keyboard-backspace"
-                    size={25}
-                    color="black"
-                    sty
-                  />
-                  <Text style={styles.textStyle}>Done</Text>
-                </TouchableOpacity>
+                <View>
+                  <TouchableOpacity
+                    style={{
+                      color: "black",
+                      // backgroundColor: "#59c26F",
+                    }}
+                    onPress={() => {
+                      this.setState((prevState) => ({
+                        modalVisible: !prevState.modalVisible,
+                      }));
+                    }}
+                  >
+                    <FontAwesome5
+                      name="arrow-left"
+                      size={22}
+                      color="black"
+                    ></FontAwesome5>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.sectiontitle}>Recent News</Text>
+                <Text style={styles.sectiontitle}></Text>
               </View>
-              <Text style={styles.sectiontitle}>Recent News</Text>
-            </View>
 
-            <ScrollView>{props.content}</ScrollView>
+              <ScrollView>{loadNews()}</ScrollView>
+            </View>
           </View>
-        </View>
-      </Modal>
-    </View>
-  );
+        </Modal>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {loadNews()}
+        </ScrollView>
+      </View>
+    );
+  }
 }
+export default connect(mapStateToProps, null)(AllNews);
 const styles = StyleSheet.create({
   sectiontitle: {
     // marginTop: 20,
@@ -92,6 +146,18 @@ const styles = StyleSheet.create({
   },
   newscard: {
     flexDirection: "column",
+  },
+  loader: { width: 50, height: 50 },
+  loaderContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  errorContainer: {
+    paddingTop: 20,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   texthead: {
     fontWeight: "bold",
@@ -151,7 +217,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: "100%",
-    height: "100%",
+    height: "96%",
     backgroundColor: "white",
     borderTopEndRadius: 10,
     borderTopStartRadius: 10,
@@ -196,4 +262,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-export default AllNews;
