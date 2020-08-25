@@ -25,7 +25,7 @@ def newuser():
         data = request.get_json()
         data['_id'] = data['username']
         data['user'] = data['username']
-        data['type'] = data['user']
+        data['type'] = 'user'
         new_doc = cloud_db.create_document(data)
         return jsonify({'ok': True, 'message': 'User created successfully!'}), 200
 
