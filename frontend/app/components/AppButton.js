@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import PropTypes from "prop-types";
 
 function AppButton({ title, onPress, color = "#59c26F" }) {
@@ -18,7 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#59c26F",
     borderRadius: 40,
     flexDirection: "row",
-    width: "70%",
+    width: "80%",
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",

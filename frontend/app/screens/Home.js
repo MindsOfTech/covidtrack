@@ -17,11 +17,12 @@ import MapFull from "./MapFull";
 import Checkup from "./Checkup";
 import Statistics from "./Statistics";
 import Visited from "./Visited";
-import ModalScan from "../components/Scan";
+import ModalScan from "../components/QrScanner";
 import AppButton from "../components/AppButton";
 import defaultStyles from "./../config/styles";
 import * as firebase from "firebase";
 import { connect } from "react-redux";
+import { fetchUserRefresh } from "./../redux/actions/setUserActions";
 
 const mapStateToProps = (state) => {
   return {
@@ -33,17 +34,11 @@ class HomeScreen extends React.Component {
   onSignoutPress = () => {
     firebase.auth().signOut();
   };
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.dispatch(fetchUserRefresh());
+  }
 
   render() {
-    // if (error) {
-    //   return <Text>Error! fetching data: {error}</Text>;
-    // }
-
-    // if (loading) {
-    //   return <Text>Loading...</Text>;
-    // }
-    console.log(this.props.user);
     return (
       // Try setting `flexDirection` to `column`.
       <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -71,7 +66,7 @@ class HomeScreen extends React.Component {
         </View>
         <ScrollView>
           <View style={styles.content}>
-            <View style={{}}>
+            <View>
               <Text style={styles.sectiontitle}>Covid Overview</Text>
               <View
                 style={[

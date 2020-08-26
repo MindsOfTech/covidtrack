@@ -7,8 +7,9 @@ import {
   Button,
   Alert,
   KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
-import AppBack1 from "./../../components/AppBack1";
+import AppBackground from "../../components/AppBackground";
 import AppButton from "./../../components/AppButton";
 import AppTextInput from "./../../components/AppTextInput";
 import * as firebase from "firebase";
@@ -91,11 +92,12 @@ class SignupScreen extends React.Component {
     return (
       <View>
         <KeyboardAvoidingView behavior="position" enabled>
-          <AppBack1>
+          <AppBackground>
             <Text style={styles.title}>Covy</Text>
             <Text style={styles.subtitle}>Good health starts with you.</Text>
-          </AppBack1>
-          <View style={{ position: "fixed", bottom: 100 }}>
+          </AppBackground>
+
+          <View style={styles.positon}>
             <AppTextInput
               autoCapitalise="none"
               autoCorrect={false}
@@ -173,7 +175,13 @@ const styles = StyleSheet.create({
     color: "white",
     flex: 1,
   },
-
+  positon: {
+    width: "100%",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    height: Dimensions.get("window").height,
+    paddingBottom: "10%",
+  },
   title: {
     fontWeight: "bold",
     fontSize: 80,
