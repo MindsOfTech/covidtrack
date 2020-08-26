@@ -32,8 +32,13 @@ function AppBackground({ children, style }) {
 const styles = StyleSheet.create({
   screen: {
     // paddingTop: Constants.statusBarHeight,
-    flex: 1,
-    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: "100%",
+    height: "100%",
   },
   view: {
     flex: 1,

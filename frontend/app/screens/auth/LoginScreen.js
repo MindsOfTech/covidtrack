@@ -5,6 +5,7 @@ import {
   Text,
   Alert,
   KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
 import * as firebase from "firebase";
 import AppBackground from "../../components/AppBackground";
@@ -73,7 +74,8 @@ class LoginScreen extends React.Component {
             <Text style={styles.title}>Covy</Text>
             <Text style={styles.subtitle}>Good health starts with you.</Text>
           </AppBackground>
-          <View style={{ position: "fixed", bottom: 80 }}>
+
+          <View style={styles.position}>
             <AppTextInput
               autoCapitalise="none"
               autoCorrect={false}
@@ -140,6 +142,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     color: "white",
     flex: 1,
+  },
+  position: {
+    width: "100%",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    height: Dimensions.get("window").height,
+    paddingBottom: "10%",
+    // height: 500,
   },
   forgotPassword: {
     marginTop: 20,

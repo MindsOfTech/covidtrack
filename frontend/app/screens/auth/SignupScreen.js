@@ -7,6 +7,7 @@ import {
   Button,
   Alert,
   KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
 import AppBackground from "../../components/AppBackground";
 import AppButton from "./../../components/AppButton";
@@ -95,7 +96,8 @@ class SignupScreen extends React.Component {
             <Text style={styles.title}>Covy</Text>
             <Text style={styles.subtitle}>Good health starts with you.</Text>
           </AppBackground>
-          <View style={{ position: "fixed", bottom: 100 }}>
+
+          <View style={styles.positon}>
             <AppTextInput
               autoCapitalise="none"
               autoCorrect={false}
@@ -173,7 +175,13 @@ const styles = StyleSheet.create({
     color: "white",
     flex: 1,
   },
-
+  positon: {
+    width: "100%",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    height: Dimensions.get("window").height,
+    paddingBottom: "10%",
+  },
   title: {
     fontWeight: "bold",
     fontSize: 80,

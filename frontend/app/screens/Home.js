@@ -66,7 +66,7 @@ class HomeScreen extends React.Component {
         </View>
         <ScrollView>
           <View style={styles.content}>
-            <View style={{}}>
+            <View>
               <Text style={styles.sectiontitle}>Covid Overview</Text>
               <View
                 style={[

@@ -5,6 +5,7 @@ import {
   Text,
   Alert,
   KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
 import * as firebase from "firebase";
 import AppBackground from "../../components/AppBackground";
@@ -45,7 +46,8 @@ export default class LoginScreen extends React.Component {
             <Text style={styles.title}>Covy</Text>
             <Text style={styles.subtitle}>Reset your password</Text>
           </AppBackground>
-          <View style={{ position: "fixed", bottom: 20 }}>
+
+          <View style={styles.position}>
             <AppTextInput
               autoCapitalise="none"
               autoCorrect={false}
@@ -60,7 +62,7 @@ export default class LoginScreen extends React.Component {
             />
 
             <AppButton
-              title="Reset passsword"
+              title="Reset password"
               color="#59c26F"
               onPress={this.onResetPasswordPress}
             />
@@ -83,6 +85,13 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     color: "white",
     flex: 1,
+  },
+  position: {
+    width: "100%",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    height: Dimensions.get("window").height,
+    paddingBottom: "10%",
   },
   forgotPassword: {
     marginTop: 20,
