@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Text, Dimensions, Image } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import AppBack1 from "../components/AppBack1";
+import AppBackground from "../components/AppBackground";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import AppTextInput from "../components/AppTextInput";

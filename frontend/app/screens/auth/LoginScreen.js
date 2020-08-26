@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import * as firebase from "firebase";
-import AppBack1 from "./../../components/AppBack1";
+import AppBackground from "../../components/AppBackground";
 import AppButton from "./../../components/AppButton";
 import AppTextInput from "./../../components/AppTextInput";
 import defaultStyles from "./../../config/styles";
@@ -69,10 +69,10 @@ class LoginScreen extends React.Component {
     return (
       <View>
         <KeyboardAvoidingView behavior="position" enabled>
-          <AppBack1>
+          <AppBackground>
             <Text style={styles.title}>Covy</Text>
             <Text style={styles.subtitle}>Good health starts with you.</Text>
-          </AppBack1>
+          </AppBackground>
           <View style={{ position: "fixed", bottom: 80 }}>
             <AppTextInput
               autoCapitalise="none"
