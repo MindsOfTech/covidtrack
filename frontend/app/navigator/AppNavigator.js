@@ -3,13 +3,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import HomeStackScreen from "./../screens/Home";
 import Checkup from "../screens/Checkup";
-
+import { DefaultTheme } from "@react-navigation/native";
+import DefaultStyles from "./../config/styles";
 const AppNavigatorTab = createBottomTabNavigator();
 
 const tabBarOptions = {
   // showLabel: false,
   activeTintColor: "#04d45b",
-  inactiveTintColor: "#000",
+  inactiveTintColor: DefaultStyles.colors.grey,
   style: {
     backgroundColor: "#FFFFFF",
     paddingTop: 5,
