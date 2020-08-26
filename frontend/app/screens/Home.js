@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import CovidStatsMinimized from "../components/CovidStatsMinimized";
-import NewsItem from "../components/NewsItem";
 import AllNews from "../components/AllNews";
 import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import MapView, { Marker, Circle } from "react-native-maps";
