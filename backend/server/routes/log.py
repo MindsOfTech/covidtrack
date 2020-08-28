@@ -7,101 +7,87 @@ import pyqrcode
 from server import app, cloud_db, check_for_token
 
 
-@app.route('/log/<username>', methods=['GET', 'POST'])
+@app.route('/log', methods=['GET', 'POST'])
 @check_for_token
-def log(username):
-    data = request.get_json()
+def log():
+    userdata = request.get_json()
 
-    # cmpidno - Company's Identification Number
     if request.method == 'GET':
-        name = username+'_LOG'
+        name = userdata['user']+'_LOG'
         selector = {'_id': name, 'type': 'log'}
-
         query = cloud_db.get_query_result(selector)
-
-        select = {}
         for doc in query:
-            select['CompanyName'] = doc['CompanyName']
-            select['DateTimeVisited'] = doc['DateTimeVisited']
-            select['LocationVisited'] = doc['LocationVisited']
-            select['username'] = username
-
-        results = [select]
-
-        return jsonify(select)
+            userdoc = doc['_id']
+        return jsonify({"reseult": cloud_db[userdoc]})
 
     if request.method == 'POST':
-        cmpidno = data['cmpid']
+        loclist = []
+        timelist = []
+
+        # Error Handling
+        # If doc of type log is found it will be up dated
+        # Otherwise the except will create the log doc.
+
         try:
-            name = username+'_LOG'
+            # UPDATES a user's LOG doc
+
+            cmpidno = userdata['cmpID']
+            name = userdata['user']+'_LOG'
 
             selector = {'_id': name, 'type': 'log'}
             userquery = cloud_db.get_query_result(selector)
+
             for doc in userquery:
-                placeh = doc['_id']
-            user = cloud_db[placeh]
+                logid = doc['_id']
+            logdata = cloud_db[logid]
             now = datetime.now()
             dt_string = now.strftime("%d/%m/%Y:%H:%M")
 
-            cmpname = companyupdates(cmpidno)
+            # After updating the user's log file. A companies doc is update with the visit.
+            companyupdates(cmpidno)
+            loclist.append(userdata['cmpID'])
+            timelist.append(dt_string)
 
-            locationList = []
-            datetimeList = []
-            nameList = []
-            locationList.append(cmpidno)
-            datetimeList.append(dt_string)
-            nameList.append(cmpname)
+            logdata['Location Visited'] = logdata['Location Visited'] + loclist
+            logdata['DateTime Visited'] = logdata['DateTime Visited'] + timelist
 
-            if user['_id'] in cloud_db:
-                user['LocationVisited'] = user['LocationVisited'] + locationList
-                user['DateTimeVisited'] = user['DateTimeVisited'] + datetimeList
-                user['CompanyName'] = user['CompanyName'] + nameList
-
-                user.save()
-                return ({'MESSAGE': 'Check in was recorded', 'user': user['_id']})
+            logdata.save()
+            return ({'MESSAGE': 'Thanks for checking in'})
 
         except:
-            # If the user with a doc of type 'log' is not found.
-            # Another query is used to search for the same user but of type 'user' and creates the log file.
-            selector = {'_id': username, 'type': 'user'}
+
+            # CREATES a user's LOG doc
+
+            cmpidno = userdata['cmpID']
+            name = userdata['user']+'_LOG'
+
+            selector = {'user': userdata['user'], 'type': 'user'}
             userquery = cloud_db.get_query_result(selector)
+
             for doc in userquery:
-                placeh = doc['_id']
-            log = cloud_db[placeh]
+                userid = doc['_id']
+            newlog = cloud_db[userid]
             now = datetime.now()
             dt_string = now.strftime("%d/%m/%Y:%H:%M")
 
-            cmpname = companyupdates(cmpidno)
-            locationList = []
-            datetimeList = []
-            nameList = []
-            locationList.append(cmpidno)
-            datetimeList.append(dt_string)
-            nameList.append(cmpname)
+            loclist.append(userdata['cmpID'])
+            timelist.append(dt_string)
+            newlog['Location Visited'] = []
+            newlog['DateTime Visited'] = []
 
-            log['type'] = 'log'
-            log['LocationVisited'] = []
-            log['DateTimeVisited'] = []
-            log['CompanyName'] = nameList
+            newlog['_id'] = name
+            newlog['Location Visited'] = loclist
+            newlog['DateTime Visited'] = timelist
+            newlog['type'] = 'log'
 
-            log['_id'] = log['_id']+'_LOG'
-            log['LocationVisited'] = log['LocationVisited'] + locationList
-            log['DateTimeVisited'] = log['DateTimeVisited'] + datetimeList
-            newlog = cloud_db.create_document(log)
+            # After updating the user's log file. A companies doc is update with the visit.
+            companyupdates(cmpidno)
 
-            return ({'MESSAGE': 'Log WAS CREATED and Check in created', 'user': log['_id']})
+            newdoc = cloud_db.create_document(newlog)
+            return ({'MESSAGE': 'Log WAS CREATED and Check in created'})
 
-
-@app.route('/log', methods=['GET'])
-@check_for_token
-def checkget():
-    username = request.args.get('username')
-    name = username+'_LOG'
-    return jsonify(cloud_db[name])
 
 # Updates a company's doc file on number of visits and date time of visit
-
-
 def companyupdates(name):
     cmpdoc = cloud_db[name]
     # return cmpdoc
@@ -110,53 +96,7 @@ def companyupdates(name):
     dt_string = now.strftime("%d/%m/%Y:%H:%M")
     datetimeList.append(dt_string)
 
-    cmpdoc['Number of Visitors'] = cmpdoc['Number of Visitors']+1
-    cmpdoc['Time Scanner'] = cmpdoc['Time Scanner']+datetimeList
+    cmpdoc['No. Visitors'] = cmpdoc['No. Visitors']+1
+    cmpdoc['Time Scanned'] = cmpdoc['Time Scanned']+datetimeList
     cmpdoc.save()
-    return cmpdoc['Company Name']
-    # return({'message': 'CURRENT QTY', 'Number of Visitors': cmpdoc['Number of Visitors']})
-
-
-'''
-@app.route('/log/<username>', methods=['GET','POST'])
-def log(username):
-    data = request.get_json()
-    if request.method == 'POST':
-        qry = Query(cloud_db, selector={'type': 'log', 'user': username})
-
-        empty = True
-        for doc in qry.result:
-            empty = False
-            r = doc['_id']
-
-        if empty:
-            json_doc = {
-                '_id': username + '_LOG',
-                'Location Visited': [data['Location Visited']],
-                'Date Time Visited': [data['Date Time Visited']],
-                'user': username,
-                'type': 'log'
-            }
-
-            new_doc = cloud_db.create_document(json_doc)
-
-        else:
-
-            mydoc = cloud_db[r]
-            mydoc['Location Visited'].append(data['Location Visited'])
-            mydoc['Date Time Visited'].append(data['Date Time Visited'])
-            mydoc.save()
-
-        return jsonify({'ok': True, 'message': 'checkin recorded'}), 200
-
-
-    if request.method == 'GET':
-        qry = Query(cloud_db, selector={'type': 'log', 'user': username})
-        results = []
-
-        for doc in qry.result:
-            results.append(doc)
-
-        return jsonify({'results':results}), 200
-
-'''
+    return jsonify({"Message": cmpdoc['Company Name']})

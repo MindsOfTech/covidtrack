@@ -8,58 +8,49 @@ from datetime import datetime
 from server import app, cloud_db, check_for_token
 
 
-@app.route('/symptoms', methods=['GET', 'POST'])
+@app.route('/symptoms', methods=['GET', 'POST', 'PATCH'])
 @check_for_token
-def symptom():
+def symptoms():
+    symptdata = request.get_json()
     if request.method == 'POST':
-        cnt = request.args.get('countries')
-        symptomsList = request.args.getlist('symptoms')
-        testList = request.args.getlist('tested')
-        isdate = request.args.get('influenzatest')
-        confirmedex = request.args.get('confirmedex')
-        hshold = request.args.get('confirmedex')
-
-        doc_exist = qry in cloud_db
-        if doc_exist:
-            mydoc = cloud_db[qry]
-            mydoc['country'] = cnt
-            mydoc['symptoms'] = mydoc['symptoms'] + symptomsList
-            mydoc['Test For'] = testList
-            mydoc['Last Influenza Test Date'] = isdate
-            mydoc['Have you been exposed to someone confirmed with COVID19'] = confirmedex
-            mydoc['Does anyone in your household shows symptoms of covid19'] = hshold
-            mydoc['type'] = 'symptoms'
-            mydoc.save()
-            return jsonify({'ok': True, 'message': 'User DATA UPDATED successfully!'}), 200
-        else:
-            return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
-
-
-@app.route('/symptoms/<username>', methods=['GET', 'POST'])
-@check_for_token
-def page(username):
-    data = request.get_json()
-    if request.method == 'POST':
-        if username in cloud_db:
+        if symptdata['user'] in cloud_db:
             now = datetime.now()
             dt_string = now.strftime("%d/%m/%Y:%H:%M")
 
-            data['_id'] = username + dt_string
-            data['datetime'] = dt_string
-            data['user'] = username
-            data['type'] = 'symptoms'
+            symptdata['_id'] = symptdata['user'] + dt_string
+            symptdata['Symptoms'] = symptdata['Symptoms']
+            symptdata['datetime'] = dt_string
+            symptdata['type'] = 'symptoms'
 
-            new_doc = cloud_db.create_document(data)
+            new_doc = cloud_db.create_document(symptdata)
 
             return jsonify({'ok': True, 'message': 'Symptoms saved successfully!'}), 200
         else:
             return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
 
     if request.method == 'GET':
-        if username in cloud_db:
+        if symptdata['user'] in cloud_db:
             query = Query(cloud_db, selector={
-                          'type': 'symptoms', 'user': username})
+                          'type': 'symptoms', 'user': symptdata['user']})
             results = []
             for doc in query.result:
                 results.append(doc)
             return jsonify({'results': results}), 200
+        return jsonify({'results': 'USER NAME FOUND'}), 200
+
+    if request.method == 'PATCH':
+        try:
+            selector = {'user': symptdata['user'],  'type': 'symptoms'}
+            usr_query = cloud_db.get_query_result(selector)
+
+            for usr_doc in usr_query:
+                doc = usr_doc['_id']
+            userdata = cloud_db[doc]
+            userdata['Symptoms'] = userdata['Symptoms'] + \
+                ", "+symptdata['Symptoms']
+            userdata['Test For'] = userdata['Test For'] + \
+                ", " + symptdata['Test For']
+            userdata.save()
+            return jsonify({'results': 'USER UPDATED'}), 200
+        except:
+            return jsonify({'results': 'USER NOT FOUND'}), 200
