@@ -49,6 +49,7 @@ class CovidStatsMinimized extends React.Component {
             color="#0084F8"
           />
           <Text style={styles.text1}>
+            {/* toLocaleString() doesn't work on android */}
             {stats.cases ? stats.cases.toLocaleString() : 0}
           </Text>
           <Text style={styles.text2}>Confirmed</Text>

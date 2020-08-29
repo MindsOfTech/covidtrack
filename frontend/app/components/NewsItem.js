@@ -21,7 +21,7 @@ function NewsItem(props) {
   ));
   return (
     <View style={styles.newscard}>
-      <Text style={styles.texthead}>{props.title}</Text>
+      <Text style={styles.texthead}>{props.title.slice(0, 60)}...</Text>
       <View
         style={{
           flexDirection: "row-reverse",

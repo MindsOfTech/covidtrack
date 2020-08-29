@@ -4,7 +4,7 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  Appearance,
+  ActivityIndicator,
 } from "react-native";
 import { AppLoading, Asset, Font } from "expo";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,7 +15,9 @@ import * as firebase from "firebase";
 import RootNavigator from "./app/navigator/RootNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
-import store from "./app/redux/store";
+// import store from "./app/redux/store";
+import { getStore, getPersistor } from "./app/redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -35,8 +37,16 @@ export default class App extends React.Component {
     this.setState({ isAuthenticationReady: true });
     this.setState({ isAuthenticated: !!user });
   };
-
+  renderLoading = () => {
+    return (
+      <View>
+        <ActivityIndicator size={"large"} />
+      </View>
+    );
+  };
   render() {
+    const store = getStore();
+    const myPersistor = getPersistor();
     if (
       (!this.state.isLoadingComplete || !this.state.isAuthenticationReady) &&
       !this.props.skipLoadingScreen
@@ -51,19 +61,23 @@ export default class App extends React.Component {
     } else {
       return (
         <Provider store={store}>
-          <View style={styles.container}>
-            {Platform.OS === "ios" && <StatusBar barStyle={"light-content"} />}
-            {Platform.OS === "android" && (
-              <View style={styles.statusBarUnderlay} />
-            )}
-            {this.state.isAuthenticated ? (
-              <NavigationContainer>
-                <AppNavigator />
-              </NavigationContainer>
-            ) : (
-              <RootNavigation />
-            )}
-          </View>
+          <PersistGate persistor={myPersistor} loading={this.renderLoading()}>
+            <View style={styles.container}>
+              {Platform.OS === "ios" && (
+                <StatusBar barStyle={"light-content"} />
+              )}
+              {Platform.OS === "android" && (
+                <View style={styles.statusBarUnderlay} />
+              )}
+              {this.state.isAuthenticated ? (
+                <NavigationContainer>
+                  <AppNavigator />
+                </NavigationContainer>
+              ) : (
+                <RootNavigation />
+              )}
+            </View>
+          </PersistGate>
         </Provider>
       );
     }

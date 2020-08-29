@@ -163,7 +163,9 @@ class ModalScan extends React.Component {
       <View style={styles.newscard}>
         <TouchableOpacity
           onPress={() => {
-            this.setState({ modalVisible: !this.state.modalVisible });
+            this.setState((prevState) => ({
+              modalVisible: !prevState.modalVisible,
+            }));
           }}
           style={styles.cta}
         >
@@ -215,9 +217,9 @@ class ModalScan extends React.Component {
                         color: "black",
                       }}
                       onPress={() => {
-                        this.setState({
-                          modalVisible: !this.state.modalVisible,
-                        });
+                        this.setState((prevState) => ({
+                          modalVisible: !prevState.modalVisible,
+                        }));
                       }}
                     >
                       <FontAwesome5
