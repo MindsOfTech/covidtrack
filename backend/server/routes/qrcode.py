@@ -18,9 +18,10 @@ from server import app, cloud_db, check_for_token
 
 # Generating QR CODES for companies
 @app.route('/qrCompanies', methods=['GET'])
-@check_for_token
+# @check_for_token
 def cmpqr():
     if request.method == 'GET':
+
         cmpid = request.args.get('id')
 
         value_to_turn_into_qrcode = json.dumps(
@@ -41,7 +42,7 @@ def cmpqr():
 
 # Generating QR CODE for user
 @app.route('/qrUser/<username>', methods=['GET'])
-@check_for_token
+# @check_for_token
 def userqr(username):
     if request.method == 'GET':
         #userid = request.args.get('_id')
