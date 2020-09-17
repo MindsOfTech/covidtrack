@@ -3,15 +3,18 @@ from flask import Flask, abort, session, request, redirect
 from flask.json import jsonify
 from cloudant.client import Cloudant
 from functools import wraps
-
+from flask_restx import Resource, Api
 import jwt
 
 app = Flask(__name__, template_folder="../public",
             static_folder="../public", static_url_path='')
 
-ACCOUNT_NAME = ""
-API_KEY = ""
-app.config['SECRET_KEY'] = ''
+api = Api(app)
+app.config['SWAGGER_UI_JSONEDITOR']=True
+
+ACCOUNT_NAME = "7e89eed1-ada0-47e1-b1d0-2e72dbcf1c45-bluemix"
+API_KEY = "8GlK-4CkdvhsteVdNIGfvEQEifYk5YiyXZpAoVzIEd9w"
+app.config['SECRET_KEY'] = 'piday@@DDSD'
 
 client = Cloudant.iam(ACCOUNT_NAME, API_KEY, connect=True)
 dbname = 'coviddev_db'
@@ -33,7 +36,9 @@ def check_for_token(func):
 
         return func(*args, **kwargs)
     return wrapped
-  
+
+
+
 
 from server.routes import *
 from server.services import *
