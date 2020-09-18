@@ -4,118 +4,86 @@ from cloudant.error import CloudantException
 from cloudant.client import Cloudant
 from cloudant.query import Query
 from flask_restx import Resource, Api, fields
-from server import app, cloud_db, api
-
-
-class User():
-
-    def __init__(self, user, fn, ln, psd, add1, add2, prs, email):
-        self.user = user
-        self.fn = fn
-        self.ln = ln
-        self.psd = psd
-        self.add1 = add1
-        self.add2 = add2
-        self.prs = prs
-        self.email = email
-        self.type = 'user'
-
-    def __init__(self):
-        self.user = ''
-        self.fn = ''
-        self.ln = ''
-        self.psd = ''
-        self.add1 = ''
-        self.add2 = ''
-        self.prs = ''
-        self.email = ''
-        self.type = 'user'
-        #self.__init__(isuser, isfn, isln, ispsd,isadd1, isadd2, isprs, isemail)
-
-    def myJsonify(self):
-        return {
-            'user': self.user,
-            '_id': self.user,
-            'password': self.psd,
-            'firstname': self.fn,
-            'lastname': self.ln,
-            'Street Address': self.add1,
-            'Town': self.add2,
-            'Parish': self.prs,
-            'E-Mail Address': self.email,
-            'type': self.type,
-        }
-
-    def getid(self):
-        return self.user
-
-    def myAppend(self, user, fn, ln, psd, add1, add2, prs, email):
-        self.user = user
-        self.fn = fn
-        self.ln = ln
-        self.psd = psd
-        self.add1 = add1
-        self.add2 = add2
-        self.prs = prs
-        self.email = email
+from server import app, cloud_db, api, usertitle
 
 
 usermodel = api.model('USER DATA MODEL', {
-    'user': fields.String('username'),
-    'password': fields.String('password'),
-    'firstname': fields.String('user\'s firstname'),
-    'lastname': fields.String('user\'s lastname'),
-    'Street Address': fields.String('Street Address'),
-    'Town': fields.String('Town'),
-    'Parish': fields.String('Parish'),
-    'E-Mail Address': fields.String('valid E-Mail Address'),
+    'user': fields.String(description='username'),
+    'password': fields.String(description='password'),
+    'firstname': fields.String(description='user\'s firstname'),
+    'lastname': fields.String(description='user\'s lastname'),
+    'Street Address': fields.String(description='Street Address'),
+    'Town': fields.String(description='Town'),
+    'Parish': fields.String(description='Parish', example='Kingston'),
+    'E-Mail Address': fields.String(description='valid E-Mail Address', example='something@email.com'),
 
 })
 
-userdata = User()
 
-
-@api.route('/user/post')
-class postEndpoint(Resource):
+@usertitle.route('/post')
+class postUEndpoint(Resource):
     @api.expect(usermodel)
+    @api.response(200, 'Success')
+    @api.response(404, 'USER NOT FOUND')
     def post(self):
         try:
-            userdata.myAppend(
-                user=request.json['user'], fn=request.json['firstname'],
-                ln=request.json['lastname'], psd=request.json['password'],
-                add1=request.json['Street Address'], add2=request.json['Town'], prs=request.json['Parish'],
-                email=request.json['E-Mail Address']
-            )
-            new_doc = cloud_db.create_document(userdata.myJsonify())
+            docData = {
+                'user': request.json['user'],
+                '_id': request.json['user'],
+                'password': request.json['password'],
+                'firstname': request.json['firstname'],
+                'lastname': request.json['lastname'],
+                'Street Address': request.json['Street Address'],
+                'Town': request.json['Town'],
+                'Parish': request.json['Parish'],
+                'E-Mail Address': request.json['E-Mail Address'],
+                'type': 'user',
+            }
+            new_doc = cloud_db.create_document(docData)
             return {'ok': True, 'message': 'User created successfully!'}, 200
         except:
-            return {'ok': True, 'message': 'ERROR! USER NOT ADDED'}, 200
+            return {'ok': True, 'message': 'ERROR! USER NOT ADDED'}, 404
 
 
-@api.route('/user/get/<id>')
-class getEndpoint(Resource):
+@usertitle.route('/get/<id>')
+class getUEndpoint(Resource):
     @api.doc(params={'id': 'user\'s username'})
+    @api.response(200, 'Success')
+    @api.response(404, 'USER NOT FOUND')
     def get(self, id):
         try:
-            return {'user': cloud_db[id]}, 200
+            selector = {'_id': id, 'type': 'user'}
+            qry = cloud_db.get_query_result(selector)
+            for docdata in qry:
+                data = docdata['_id']
+            return {'MESSAGE': cloud_db[data]}, 200
         except:
-            return {'ok': True, 'message': 'no record found'}, 200
+            return {'ok': True, 'message': 'no record found'}, 404
 
 
-@api.route('/user/delete/<id>')
-class deleteEndpoint(Resource):
+@usertitle.route('/delete/<id>')
+class deleteUEndpoint(Resource):
+    @api.response(200, 'Success')
+    @api.response(404, 'USER NOT FOUND')
     @api.doc(params={'id': 'user\'s username'})
     def delete(self, id):
         try:
-            mydoc = cloud_db[id]
+            selector = {'_id': id, 'type': 'user'}
+            qry = cloud_db.get_query_result(selector)
+            for docdata in qry:
+                data = docdata['_id']
+
+            mydoc = cloud_db[data]
             mydoc.delete()
             return {'ok': True, 'message': 'record deleted'}, 200
         except:
-            return {'ok': True, 'message': 'no record found'}, 200
+            return {'ok': True, 'message': 'no record found'}, 404
 
 
-@api.route('/user/put/<id>')
-class putEndpoint(Resource):
+@usertitle.route('/put/<id>')
+class putUEndpoint(Resource):
+    @api.response(200, 'Success')
+    @api.response(404, 'USER NOT FOUND')
     @api.expect(usermodel)
     def put(self, id):
         try:
@@ -123,4 +91,4 @@ class putEndpoint(Resource):
 
             return {'ok': True, 'message': 'User UPDATED successfully!'}, 200
         except:
-            return {'ok': True, 'message': 'User NOT UPDATED successfully!'}, 200
+            return {'ok': True, 'message': 'User NOT UPDATED successfully!'}, 404
