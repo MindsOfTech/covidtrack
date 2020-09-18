@@ -1,4 +1,3 @@
-
 import os
 from flask import Flask, abort, session, request, redirect
 from flask.json import jsonify
@@ -21,13 +20,10 @@ def default_id(resource, method):
 api = Api(app, default_id=default_id, version='1.0',
           title='Covy\'s API', description='Endpoint for our covy app')
 
-logtitle = api.namespace(
-    'Log', description='Genertating log information in both the user doc and the company\'s doc.')
-usertitle = api.namespace('Users', description='Endpoints to CRUD a user')
-companytitle = api.namespace(
-    'Company', description='Endpoints to CRUD a company.')
-symptomstitle = api.namespace(
-    'Symptoms', description='Endpoints to CRUD a Symptoms.')
+logtitle = api.namespace('Log')
+usertitle = api.namespace('Users')
+companytitle = api.namespace('Company')
+symptomstitle = api.namespace('Symptoms')
 
 app.config['SWAGGER_UI_JSONEDITOR'] = True
 
@@ -56,7 +52,8 @@ def check_for_token(func):
 
         return func(*args, **kwargs)
     return wrapped
-    
+
+
 from server.services import *
 from server.routes import *
 

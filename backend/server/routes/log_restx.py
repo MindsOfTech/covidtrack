@@ -62,7 +62,7 @@ class postLEndpoint(Resource):
             logdata['DateTime Visited'] = logdata['DateTime Visited'] + timelist
 
             logdata.save()
-            return ({'MESSAGE': 'Thanks for checking in'})
+            return ({'MESSAGE': 'Thanks for checking in'}), 200
 
         except:
 
@@ -94,7 +94,7 @@ class postLEndpoint(Resource):
             companyupdates(cmpidno)
 
             newdoc = cloud_db.create_document(newlog)
-            return ({'MESSAGE': 'Log WAS CREATED and Check in created'})
+            return ({'MESSAGE': 'Log WAS CREATED and Check in created'}), 200
 
 
 def companyupdates(name):
