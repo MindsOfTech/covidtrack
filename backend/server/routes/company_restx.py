@@ -56,7 +56,7 @@ class postCEndpoint(Resource):
     @api.expect(companymodel)
     def post(self):
         try:
-            xdocData = {
+            docData = {
                 'Company Name': request.json['Company Name'],
                 'Address One': request.json['Address One'],
                 'Address Two': request.json['Address Two'],
@@ -64,10 +64,10 @@ class postCEndpoint(Resource):
                 'Contact Number': request.json['Contact Number'],
                 'type': 'Company',
                 'Time Scanned': [],
-                'No. Visitors': []
+                'No. Visitors': 0
             }
 
-            new_doc = cloud_db.create_document(xdocData)
+            new_doc = cloud_db.create_document(docData)
             return {'ok': True, 'message': 'COMPANY created successfully!'}, 200
         except:
             return {'ok': True, 'message': 'ERROR! COMPANY NOT ADDED'}, 404
