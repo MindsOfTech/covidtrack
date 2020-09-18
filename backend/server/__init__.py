@@ -25,10 +25,16 @@ symptomstitle = api.namespace('Symptoms',description='Endpoints to CRUD a Sympto
     
 app.config['SWAGGER_UI_JSONEDITOR']=True
 
+<<<<<<< HEAD
 
 ACCOUNT_NAME = "7e89eed1-ada0-47e1-b1d0-2e72dbcf1c45-bluemix"
 API_KEY = "8GlK-4CkdvhsteVdNIGfvEQEifYk5YiyXZpAoVzIEd9w"
 app.config['SECRET_KEY'] = 'piday@@DDSD'
+=======
+ACCOUNT_NAME = ""
+API_KEY = ""
+app.config['SECRET_KEY'] = ''
+>>>>>>> b43af773f6eaaabbbc18689423980aeb809fcf28
 
 client = Cloudant.iam(ACCOUNT_NAME, API_KEY, connect=True)
 dbname = 'coviddev_db'
