@@ -8,7 +8,9 @@ export function fetchNews() {
     day: "numeric",
   });
   const DATE = d.getDate();
-  const NEWS_ENDPOINT = `http://newsapi.org/v2/top-headlines?q=covid-19&from=2020-07-${DATE}&sources=cnn,bbc-news,abc-news,cbc-news,fox-news,google-news,medical-news-today,msnbc,nbc-news&language=en&sortBy=publishedAt&apiKey=${ApiKeys.NewsApiKey}`;
+  const MONTH = d.getMonth();
+  const YEAR = d.getFullYear();
+  const NEWS_ENDPOINT = `http://newsapi.org/v2/top-headlines?q=covid-19&from=${YEAR}-${MONTH}-${DATE}&sources=cnn,bbc-news,abc-news,cbc-news,fox-news,google-news,medical-news-today,msnbc,nbc-news&language=en&sortBy=publishedAt&apiKey=${ApiKeys.NewsApiKey}`;
 
   return (dispatch) => {
     dispatch(fetchNewsBegin());
