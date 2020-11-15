@@ -1,46 +1,24 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
+import { connect } from "react-redux";
+import { fetchUserLog } from "./../redux/actions/setUserLogActions";
+import { fetchQr } from "./../redux/actions/setQrActions";
 
+const mapStateToProps = (state) => {
+  return {
+    userlog: state.userlog,
+    qr: state.qr,
+  };
+};
 class Visited extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: {
-        CompanyName: [],
-        DateTimeVisited: [],
-        LocationVisited: [],
-        username: "",
-      },
-      image: "blob:7941833A-6136-40B1-85CC-77895BECEC44?offset=0&size=440",
-    };
+  componentDidMount() {
+    this.props.dispatch(fetchUserLog("camirrickets"));
+    this.props.dispatch(fetchQr("camirrickets"));
   }
-  async componentDidMount() {
-    fetch("http://covy-backend.mybluemix.net/qrUser/psmith", {
-      method: "GET",
-    })
-      .then((response) => response.blob())
-      .then((responseBlob) => {
-        var outside = URL.createObjectURL(responseBlob);
-        this.setState({ image: outside });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
 
-    fetch("http://covy-backend.mybluemix.net/log/psmith", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({ data: responseJson });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
   renderDate(args) {
     var date = args.split(":")[0].split("/");
     var formatted = date[2] + "-" + date[1] + "-" + date[0];
@@ -51,17 +29,42 @@ class Visited extends Component {
     );
   }
   render() {
-    var qri = (
+    console.log(this.props);
+
+    const error = this.props.userlog.error;
+    const loading = this.props.userlog.loading;
+    const data = this.props.userlog.userlog;
+    const image = this.props.qr.qr;
+
+    if (error || typeof data == "object") {
+      return (
+        <View style={styles.errorContainer}>
+          <FontAwesome5 name="sad-cry" color={"red"} size={30}></FontAwesome5>
+          <View style={{ width: 20 }}></View>
+          <Text>There was an error loading userlog</Text>
+        </View>
+      );
+    }
+    if (loading) {
+      return (
+        <View style={styles.loaderContainer}>
+          <Image
+            style={styles.loader}
+            source={require("./../assets/loader.gif")}
+          />
+        </View>
+      );
+    }
+    let qri = (
       <Image
         source={{
-          uri:
-            this.state.image || "https://via.placeholder.com/300/09f/fff.png",
+          uri: image || "https://via.placeholder.com/300/09f/fff.png",
         }}
         style={{ height: 300, width: 300 }}
       ></Image>
     );
-    var places = [];
-    for (let i = 0; i < this.state.data.DateTimeVisited.length; i++) {
+    let places = [];
+    for (let i = 0; i < data.DateTimeVisited.length; i++) {
       places.push(
         <View key={i} style={{ flex: 1, padding: 30 }}>
           <View
@@ -81,7 +84,7 @@ class Visited extends Component {
                 paddingLeft: 15,
               }}
             >
-              {this.state.data.CompanyName[i]}
+              {data.CompanyName[i]}
             </Text>
           </View>
           <View
@@ -101,12 +104,13 @@ class Visited extends Component {
                 textAlign: "center",
               }}
             >
-              {this.renderDate(this.state.data.DateTimeVisited[i])}
+              {this.renderDate(data.DateTimeVisited[i])}
             </Text>
           </View>
         </View>
       );
     }
+
     return (
       <View style={styles.container}>
         <Text
@@ -117,7 +121,7 @@ class Visited extends Component {
             fontWeight: "bold",
           }}
         >
-          Places {this.state.data.username} visited
+          Places {data.username} visited
         </Text>
         <ScrollView style={{}}>
           <View
@@ -138,7 +142,7 @@ class Visited extends Component {
   }
 }
 
-export default Visited;
+export default connect(mapStateToProps, null)(Visited);
 
 const styles = StyleSheet.create({
   container: {
@@ -146,6 +150,18 @@ const styles = StyleSheet.create({
     paddingTop: 23,
     backgroundColor: "white",
     minHeight: "100%",
+  },
+  loader: { width: 50, height: 50 },
+  loaderContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  errorContainer: {
+    paddingTop: 20,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   input: {
     margin: 15,

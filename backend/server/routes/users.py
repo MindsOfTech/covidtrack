@@ -11,10 +11,12 @@ from server import app, cloud_db, check_for_token
 def newuser():
     # Postman test http://127.0.0.1:5000/user?id=jrichard&password=testpassword&fname=James&lname=Richard&number=7839871234&parish=St. James
     if request.method == 'POST':
+
         userdata = request.get_json()
         userdata['_id'] = userdata['user']
         userdata['type'] = 'user'
         new_doc = cloud_db.create_document(userdata)
+
         return jsonify({'ok': True, 'message': 'User created successfully!'}), 200
 
 

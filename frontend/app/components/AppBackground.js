@@ -3,7 +3,7 @@ import Svg, { Circle, Path, G, Defs } from "react-native-svg";
 import Constants from "expo-constants";
 import { StyleSheet, SafeAreaView, View, Dimensions } from "react-native";
 
-function AppBack1({ children, style }) {
+function AppBackground({ children, style }) {
   return (
     <Svg
       width={Dimensions.get("window").width}
@@ -32,11 +32,16 @@ function AppBack1({ children, style }) {
 const styles = StyleSheet.create({
   screen: {
     // paddingTop: Constants.statusBarHeight,
-    flex: 1,
-    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: "100%",
+    height: "100%",
   },
   view: {
     flex: 1,
   },
 });
-export default AppBack1;
+export default AppBackground;

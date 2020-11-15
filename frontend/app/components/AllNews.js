@@ -66,7 +66,7 @@ class AllNews extends React.Component {
         />
       ));
     };
-
+    // console.log(loadNews())
     return (
       <View style={styles.newscard}>
         <TouchableOpacity
@@ -128,7 +128,7 @@ class AllNews extends React.Component {
           </View>
         </Modal>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {loadNews()}
+          {loadNews().slice(0, 3)}
         </ScrollView>
       </View>
     );
