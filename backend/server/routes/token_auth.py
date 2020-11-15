@@ -10,36 +10,26 @@ import jwt
 from functools import wraps
 
 
-'''exp_time = datetime.datetime.utcnow()+datetime.timedelta(seconds=3600)'''
 curr_time = datetime.datetime.utcnow()
-
-@ app.route('/public')
-def public():
-    return jsonify({"MESSAGE": "no token needed"})
-
-
-@ app.route('/auth')
-@check_for_token
-def private():
-    return jsonify({"message": "Welcome to covy", "Current Time": curr_time})
 
 
 @ app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
-        try:
-            username = request.args.get('username')
-            password = request.args.get('password')
 
-            selector = {'user': username,
-                        'password': password}
+        try:
+            userdata = request.get_json()
+            selector = {'user': userdata['user'],
+                        'password': userdata['password']}
             qry = cloud_db.get_query_result(selector)
+
             for doc in qry:
                 data = doc['_id']
             userdata = cloud_db[data]
             session['logged_in'] = True
 
-            token = jwt.encode({'user': username}, app.config['SECRET_KEY'])
+            token = jwt.encode(
+                {"user": userdata['user']}, app.config['SECRET_KEY'])
 
             return jsonify({'token': token.decode('utf-8')})
         except:
