@@ -23,6 +23,7 @@ api = Api(app, default_id=default_id, version='1.0',
 logtitle = api.namespace('Log')
 usertitle = api.namespace('Users')
 companytitle = api.namespace('Company')
+messagetitle = api.namespace('Messaging')
 symptomstitle = api.namespace('Symptoms')
 
 app.config['SWAGGER_UI_JSONEDITOR'] = True
